@@ -512,7 +512,7 @@
   "resolved" "https://registry.npmjs.org/@assemblyscript/loader/-/loader-0.10.1.tgz"
   "version" "0.10.1"
 
-"@awesome-cordova-plugins/core@^6.0.1":
+"@awesome-cordova-plugins/core@^6.0.1", "@awesome-cordova-plugins/core@^6.3.0":
   "integrity" "sha512-MkcWO8akZLHa2RSJEPf76Y3P9wPqh5oXE8YCzn2vnYYeNyYWYnka2pHFsgUdbXJNiS+YeveUzvw+Isweg+wynA=="
   "resolved" "https://registry.npmjs.org/@awesome-cordova-plugins/core/-/core-6.3.0.tgz"
   "version" "6.3.0"
