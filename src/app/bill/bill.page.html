@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Header
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div class="header">
+      
+      <ion-input placeholder="Name"></ion-input>
+      <ion-input placeholder="Number"></ion-input>
+      <ion-input placeholder="Bill Number"></ion-input>
+    </div>
+
+    <div class="body">
+      <div class="left-body">
+        <table mat-table [dataSource]="data" class="table">
+          <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef>Code</th>
+            <td mat-cell *matCellDef="let item">{{ item.code }}</td>
+          </ng-container>
+          <ng-container matColumnDef="itemName">
+            <th mat-header-cell *matHeaderCellDef>Item Name</th>
+            <td mat-cell *matCellDef="let item">{{ item.itemName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+            <td mat-cell *matCellDef="let item">{{ item.price }}</td>
+          </ng-container>
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>Quantity</th>
+            <td mat-cell *matCellDef="let item">{{ item.quantity }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+      <div class="right-body">
+        <button ion-button color="primary" (click) = 'add()'>Add</button>
+        <button ion-button color="primary">Generate Bill</button>
+        <button ion-button color="primary">Clear</button>
+      </div>
+    </div>
+  </div>
+</ion-content>
