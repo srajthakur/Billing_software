@@ -237,27 +237,30 @@ export class BillPage implements OnInit {
 
       this.nativeStorage.setItem('customer',data)
 
-      this.nativeStorage.getItem(this.dateString).then(data=>{
-        const indata = {
-        'tabledata'     : this.tableData,
-        'name'          : this.name,  
-        'number'        : this.phoneNumber,
-        'totalQuantity' : this.totalQuantity,
-        'totalAmount'   : this.totalAmount,
-        'totalItems'    : this.totalItems,
-        'paymentMethod' : this.paymentMethod
-        }
-        data[data.length]=indata  
-        console.log(data)
-        this.nativeStorage.setItem(this.dateString,data)
-        
-        this.clearItems()
-      }).catch(data=>{
-        this.nativeStorage.setItem(this.dateString,[{}])
-        this.showAlert('error')})
+
     }).catch(data=>{
-  
+
+    this.nativeStorage.setItem('customer',{})
     this.showAlert('error customer')})
+
+    this.nativeStorage.getItem(this.dateString).then(data=>{
+      const indata = {
+      'tabledata'     : this.tableData,
+      'name'          : this.name,  
+      'number'        : this.phoneNumber,
+      'totalQuantity' : this.totalQuantity,
+      'totalAmount'   : this.totalAmount,
+      'totalItems'    : this.totalItems,
+      'paymentMethod' : this.paymentMethod
+      }
+      data[data.length]=indata  
+      console.log(data)
+      this.nativeStorage.setItem(this.dateString,data)
+      
+      this.clearItems()
+    }).catch(data=>{
+      this.nativeStorage.setItem(this.dateString,[{}])
+      this.showAlert('error')})
 
   }}
   else if (this.generateUpdateBill){
