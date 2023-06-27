@@ -25,9 +25,6 @@ ion-footer {
   text-align: right;
 }
 
-ion-content {
-  --ion-background-color: #ffffff;
-}
 
 ion-toolbar {
   --background: #3880ff;
@@ -59,3 +56,16 @@ ion-toolbar {
     font-size: 20px;
   }
 }
+.section-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+#phoneid{
+  border: 1px solid black;
+  color: black;
+  
+}
+.custom-table {
+  color: black; /* Set the desired font color */
+}
+

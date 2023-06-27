@@ -25,12 +25,23 @@ export class RatePage {
     code: '',
     name: '',
     price: ''
+  
   }; // Object to store new custom product inputs
 
   displayedColumns: string[] = ['code', 'name', 'price']; 
   constructor(private navCtrl: NavController,private nativeStorage:NativeStorage) {
     this.dataSource = new MatTableDataSource(this.tableData)
-    this.getdata()
+    this.nativeStorage.getItem('rate').then(data=>{
+      console.log('date already created succesfully')
+      // this.nativeStorage.setItem('customer', {})
+      this.getdata()
+      
+    }).catch(data=>{
+      this.nativeStorage.setItem('rate', [{}])
+      console.log('rate created succesfully')
+    })
+    
+
 
     
     
