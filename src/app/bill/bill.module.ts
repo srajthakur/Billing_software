@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { BillPageRoutingModule } from './bill-routing.module';
 import { MatTableModule } from '@angular/material/table';
 import { BillPage } from './bill.page';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { BillPage } from './bill.page';
     FormsModule,
     IonicModule,
     MatTableModule,
-    BillPageRoutingModule
+    BillPageRoutingModule,
+    MatIconModule
   ],
   declarations: [BillPage]
 })

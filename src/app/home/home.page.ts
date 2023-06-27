@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +7,25 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  constructor(private navCtrl: NavController) {}
 
-  constructor() {}
+  goToBill() {
+    // Handle the logic for navigating to the Bill page
+  }
 
+  goToRate() {
+    // Handle the logic for navigating to the Rate page
+  }
+
+  goToSettlement() {
+    // Handle the logic for navigating to the Settlement page
+  }
+
+  goToSettings() {
+    // Handle the logic for navigating to the Settings page
+  }
+
+  logout() {
+    // Handle the logic for logging out
+  }
 }

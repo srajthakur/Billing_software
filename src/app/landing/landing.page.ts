@@ -10,7 +10,15 @@ import { NavController } from '@ionic/angular';
 })
 export class LandingPage implements OnInit {
 
-  constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage) { }
+  constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage) { 
+    this.nativeStorage.getItem('logStatus').then(data=>{
+      console.log(data,'innnnnnnnnnnnnnn')
+      if(data == 'Login')
+      {
+        this.navCtrl.navigateForward('/bill');
+      }
+    })
+  }
 
   ngOnInit() {
   }
@@ -78,11 +86,14 @@ export class LandingPage implements OnInit {
     console.log( this.nativeStorage.keys())
     const k= this.nativeStorage.getItem(this.loginEmail)
     console.log(k)
+    console.log(this.nativeStorage.getItem('logStatus'))
     
     this.nativeStorage.getItem(this.loginEmail)
       .then(data => {
         if (data.password === this.loginPassword) {
           console.log('Login successful.');
+          this.nativeStorage.setItem('logStatus','Login')
+          console.log(this.nativeStorage.getItem('logStatus'))
           this.navCtrl.navigateForward('/bill');
         } else {
           console.log('Invalid credentials.');

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-button (click)="navFun('BILL')" class="custom-button">
+        Bill
+      </ion-button>
+      <ion-button (click)="navFun('RATE')" class="custom-button">
+        Rate Fixer
+      </ion-button>
+      <ion-button (click)="navFun('SETTLEMENT')" class="custom-button">
+        Settlement
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+      <ion-button (click)="navFun('SETTING')" class="custom-button">
+        <ion-icon name="settings"></ion-icon>
+      </ion-button>
+      <ion-button (click)="navFun('LOGOUT')" class="custom-button">
+        <ion-icon name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+
+  </ion-toolbar>
+</ion-header>
