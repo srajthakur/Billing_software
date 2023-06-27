@@ -43,6 +43,7 @@ export class BillPage implements OnInit {
   stashed:boolean=false
   updateBillNumber:any=''
   generateUpdateBill : boolean =false
+  rate:any
 
 
   
@@ -67,6 +68,9 @@ export class BillPage implements OnInit {
     this.nativeStorage.getItem(this.dateString).then(data=>{
     console.log(data)
     this.billNumber = data.length
+    this.nativeStorage.getItem('rate').then(data=>{
+      this.rate=data
+    })
     
     })
   }
@@ -130,6 +134,19 @@ export class BillPage implements OnInit {
       this.itemcode='';
       this.itemquandity='';
       this.total_fun()
+    }
+    else {
+      for(let i=0;i<this.rate.length;i++){
+       if(this.rate[i].productCode == this.itemcode){
+        let inprice = this.rate[i].productPrice
+        this.tableData.push( { itemCode: this.itemcode, itemName: 'Manual', price: inprice, quantity: this.itemquandity,totalPrice:parseInt(this.itemquandity)*parseInt(inprice)  })
+        this.dataSource = new MatTableDataSource(this.tableData)
+        this.itemcode='';
+        this.itemquandity='';
+        this.total_fun()
+        break
+       }
+      }
     }
    
   }

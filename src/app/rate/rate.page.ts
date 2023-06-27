@@ -18,8 +18,8 @@ interface MyObject {
 export class RatePage {
   tableData: MyObject[] = [] // Array to store products
   dataSource :  MatTableDataSource<any>
-  productName : string='dd'
-  productPrice : string='dd '
+  productName : string=''
+  productPrice : string=''
 
   newCustomProduct: any = {
     code: '',

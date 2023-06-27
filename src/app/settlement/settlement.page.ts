@@ -86,7 +86,7 @@ export class SettlementPage {
           {amount +=parseInt( data[i].totalAmount)};
         }
   
-        td.push({ 'date': date, 'totalBill': data.length, 'totalSale': amount });
+        td.push({ 'date': date, 'totalBill': data.length - 1, 'totalSale': amount });
       }).catch(error=>('error in getting data' + date));
   
       i--;
