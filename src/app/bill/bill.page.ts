@@ -252,8 +252,12 @@ export class BillPage implements OnInit {
         this.nativeStorage.setItem(this.dateString,data)
         
         this.clearItems()
-      })
-    }).catch(error=>('error in retriving customer'))
+      }).catch(data=>{
+        this.nativeStorage.setItem(this.dateString,[{}])
+        this.showAlert('error')})
+    }).catch(data=>{
+  
+    this.showAlert('error customer')})
 
   }}
   else if (this.generateUpdateBill){
@@ -281,10 +285,12 @@ export class BillPage implements OnInit {
     this.nativeStorage.getItem(this.dateString).then(data=>{
       console.log('date already created succesfully')
       // this.nativeStorage.setItem('customer', {})
+      this.showAlert('Welcome')
       
     }).catch(data=>{
       this.nativeStorage.setItem(this.dateString, [{}])
       this.billNumber = 1
+      this.showAlert('error')
       console.log('date created succesfully')
     })
 
