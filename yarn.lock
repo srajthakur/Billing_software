@@ -7005,6 +7005,11 @@
     "merge-stream" "^2.0.0"
     "supports-color" "^8.0.0"
 
+"jetifier@^2.0.0":
+  "integrity" "sha512-J4Au9KuT74te+PCCCHKgAjyLlEa+2VyIAEPNCdE5aNkAJ6FAJcAqcdzEkSnzNksIa9NkGmC4tPiClk2e7tCJuQ=="
+  "resolved" "https://registry.npmjs.org/jetifier/-/jetifier-2.0.0.tgz"
+  "version" "2.0.0"
+
 "jiti@^1.18.2":
   "integrity" "sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg=="
   "resolved" "https://registry.npmjs.org/jiti/-/jiti-1.18.2.tgz"
