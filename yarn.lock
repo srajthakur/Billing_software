@@ -1999,7 +1999,7 @@
   dependencies:
     "@types/cordova" "latest"
 
-"@ionic-native/core@^5.1.0":
+"@ionic-native/core@^5.1.0", "@ionic-native/core@^5.36.0":
   "integrity" "sha512-lOrkktadlKYbYf1LrDyAtsu1JnQ0oCCdkOU7iHQ8oXnNOkMwobFfD2m62F1CoOr0u9LIkpYnZSPjng8lZbmbNw=="
   "resolved" "https://registry.npmjs.org/@ionic-native/core/-/core-5.36.0.tgz"
   "version" "5.36.0"

@@ -27,6 +27,7 @@
     "@awesome-cordova-plugins/native-storage": "^6.3.0",
     "@awesome-cordova-plugins/printer": "^6.3.0",
     "@ionic-native/bluetooth-serial": "^5.36.0",
+    "@ionic-native/core": "^5.36.0",
     "@ionic-native/native-storage": "^5.36.0",
     "@ionic/angular": "^7.0.0",
     "@ionic/cordova-builders": "^9.0.0",
