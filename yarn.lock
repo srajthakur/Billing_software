@@ -526,6 +526,13 @@
   dependencies:
     "@types/cordova" "latest"
 
+"@awesome-cordova-plugins/printer@^6.3.0":
+  "integrity" "sha512-twuDx5SW1owqlLLcAiK4Gctw2RLbrVShZT1kG6zI8gY/2M4aNXsDCKQU2U1+74Mg0bW/xiFZEKESr+VEs9a2BQ=="
+  "resolved" "https://registry.npmjs.org/@awesome-cordova-plugins/printer/-/printer-6.3.0.tgz"
+  "version" "6.3.0"
+  dependencies:
+    "@types/cordova" "latest"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.18.6", "@babel/code-frame@^7.21.4", "@babel/code-frame@^7.22.5":
   "integrity" "sha512-Xmwn266vad+6DAqEB2A6V/CcZVp62BbwVmcOJc2RPuwih1kw02TjQvWVWlcKGbBPd+8/0V5DEkOcizRGYsspYQ=="
   "resolved" "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.22.5.tgz"
@@ -1984,6 +1991,13 @@
   "integrity" "sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA=="
   "resolved" "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   "version" "1.2.1"
+
+"@ionic-native/bluetooth-serial@^5.36.0":
+  "integrity" "sha512-etb2xbKQBbfI0mGkxgXDuQL40ndu0lJA48Ukz7XUaphUHSP62TofBoPZkXY/CmNvx2ZTCVBB9+2zOFsyyo6iQg=="
+  "resolved" "https://registry.npmjs.org/@ionic-native/bluetooth-serial/-/bluetooth-serial-5.36.0.tgz"
+  "version" "5.36.0"
+  dependencies:
+    "@types/cordova" "latest"
 
 "@ionic-native/core@^5.1.0":
   "integrity" "sha512-lOrkktadlKYbYf1LrDyAtsu1JnQ0oCCdkOU7iHQ8oXnNOkMwobFfD2m62F1CoOr0u9LIkpYnZSPjng8lZbmbNw=="
@@ -4725,6 +4739,11 @@
     "read-chunk" "^3.2.0"
     "strip-bom" "^4.0.0"
 
+"cordova-plugin-bluetooth-serial@^0.4.7":
+  "integrity" "sha512-Z62yZwl77CNoTLW3SwLvvvjPGq+sA1LBsSpuvdC3LePICiJHzFu2Zi5CtGSkjmkj+qOrgHoawOeXVgjN3LrPag=="
+  "resolved" "https://registry.npmjs.org/cordova-plugin-bluetooth-serial/-/cordova-plugin-bluetooth-serial-0.4.7.tgz"
+  "version" "0.4.7"
+
 "cordova-plugin-device@2.0.2":
   "integrity" "sha512-R5cQod5kc4rVCrKW5ciZf1w//qW/LOrNXEs8tOABN6OxHF/pG3JavCIlNPmbiS7GIniIuC5OeAUrKTgdltirjg=="
   "resolved" "https://registry.npmjs.org/cordova-plugin-device/-/cordova-plugin-device-2.0.2.tgz"
@@ -4744,6 +4763,11 @@
   "integrity" "sha512-olg/BzYRk0NGbKQ5f7rf21RYQEyJI19CCZn6RpVMO9/kbRRFqae/6ixjDNy81dXSu2TQ42brjBddGe1Qpn5ViA=="
   "resolved" "https://registry.npmjs.org/cordova-plugin-nativestorage/-/cordova-plugin-nativestorage-2.3.2.tgz"
   "version" "2.3.2"
+
+"cordova-plugin-printer@^0.8.0":
+  "integrity" "sha512-Olu2SuCedztO6PtXoHwA4J/emOxZlj64Ya9aZhcxoXJITG+RDF6Nb3oThcpYPTa73+py+gPF7r19lv3Q8RR/Nw=="
+  "resolved" "https://registry.npmjs.org/cordova-plugin-printer/-/cordova-plugin-printer-0.8.0.tgz"
+  "version" "0.8.0"
 
 "cordova-plugin-splashscreen@5.0.2":
   "integrity" "sha512-zc4HOECJb+5Gz1rZh5QvdIm6DREom57yXOuEmMRSqu0pJRMXTrJPlemsE1gQ+9v9gGhAyXIREibBXHHRG7eFQQ=="
@@ -9573,6 +9597,11 @@
   "integrity" "sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw=="
   "resolved" "https://registry.npmjs.org/text-table/-/text-table-0.2.0.tgz"
   "version" "0.2.0"
+
+"thermal-printer-cordova-plugin@^1.0.6":
+  "integrity" "sha512-7N/mBp6morPzMcQqbHsG7SeoQfZWJHL5RbtfLgj1EZ9+Kn0N+t5uyuAXitWL+SkdzcjonQpnR02pcklXoupZ3w=="
+  "resolved" "https://registry.npmjs.org/thermal-printer-cordova-plugin/-/thermal-printer-cordova-plugin-1.0.6.tgz"
+  "version" "1.0.6"
 
 "through@^2.3.4", "through@^2.3.6":
   "integrity" "sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg=="

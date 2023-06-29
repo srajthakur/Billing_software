@@ -84,6 +84,7 @@
         <td mat-cell *matCellDef="let product">
           <ion-button mat-icon-button (click)="settle(product.date)">Settle</ion-button>
           <ion-button mat-icon-button (click)="viewDaySale(product.date)">View</ion-button>
+          <ion-button mat-icon-button (click)="print(product.date)">Print</ion-button>
         </td>
       </ng-container>
 
@@ -92,3 +93,16 @@
     </table>
   </div>
 </ion-content>
+<div *ngIf = "bluetoothList.length>0">
+<ion-list>
+  <ion-item *ngFor="let item of bluetoothList" (click)="selectPrinter(item.id)">
+      {{item.name}} {{item.id}}
+  </ion-item>
+  </ion-list>
+  <div>
+      Selected Printer: {{selectedPrinter}}
+  </div>
+  <ion-button expand="full" color="danger" *ngIf='selectedPrinter' (click)="printStuff()">
+  PRINT!
+  </ion-button>
+</div>

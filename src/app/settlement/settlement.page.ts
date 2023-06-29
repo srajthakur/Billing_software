@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { MatTableDataSource ,MatTableModule} from '@angular/material/table';
+import { PrintService } from '../services/print.service';
 
 interface MyObject {
   'date' : string,
@@ -20,18 +21,20 @@ export class SettlementPage {
   dataSource :  MatTableDataSource<any>;
   tableData :MyObject[]=[]
   viewBill : string ='daySale'
+  bluetoothList:any=[];
+  selectedPrinter:any;
 
-  constructor(private navCtrl: NavController,private nativeStorage:NativeStorage) {
+  constructor(private navCtrl: NavController,private nativeStorage:NativeStorage,private printservice: PrintService) {
     this.dataSource = new MatTableDataSource(this.tableData)  
     this.getData()
     this.viewBill='daySale'
   }
 
 
+
   settle(date:any) {
-    this.nativeStorage.remove(date).then(data=>{
-      this.getData()
-    })
+    
+  
   }
 
   viewDaySale(date:any) {
@@ -48,6 +51,25 @@ export class SettlementPage {
       this.dataSource = new MatTableDataSource(td)
     })
   }
+  print(date:any){
+         this.printservice.searchBluetoothPrinter().then(data=>{
+          this.bluetoothList=data
+         })
+  }
+  selectPrinter(macAddress:any){
+    //Selected printer macAddress stored here
+    this.selectedPrinter=macAddress;
+  }
+  
+  //This will print
+  printStuff()
+  {  
+     //The text that you want to print
+     var myText="Hello hello hello \n\n\n This is a test \n\n\n Hello hello hello \n\n\n This is a test \n\n\n";
+     this.printservice.sendToBluetoothPrinter(this.selectedPrinter,myText);
+  }
+  
+  
 
   navFun(data:string){
     if (data == 'BILL'){

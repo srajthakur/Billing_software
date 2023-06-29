@@ -25,6 +25,8 @@
     "@angular/router": "^16.0.0",
     "@awesome-cordova-plugins/core": "^6.3.0",
     "@awesome-cordova-plugins/native-storage": "^6.3.0",
+    "@awesome-cordova-plugins/printer": "^6.3.0",
+    "@ionic-native/bluetooth-serial": "^5.36.0",
     "@ionic-native/native-storage": "^5.36.0",
     "@ionic/angular": "^7.0.0",
     "@ionic/cordova-builders": "^9.0.0",
@@ -32,6 +34,7 @@
     "cordova-browser": "7.0.0",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
+    "thermal-printer-cordova-plugin": "^1.0.6",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },
@@ -51,10 +54,12 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
+    "cordova-plugin-bluetooth-serial": "^0.4.7",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^5.0.0",
     "cordova-plugin-nativestorage": "^2.3.2",
+    "cordova-plugin-printer": "^0.8.0",
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-statusbar": "2.4.2",
     "eslint": "^7.26.0",
@@ -80,7 +85,9 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-bluetooth-serial": {},
+      "cordova-plugin-printer": {}
     },
     "platforms": [
       "browser",
