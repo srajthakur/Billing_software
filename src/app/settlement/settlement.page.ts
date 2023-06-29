@@ -54,6 +54,8 @@ export class SettlementPage {
   print(date:any){
          this.printservice.searchBluetoothPrinter().then(data=>{
           this.bluetoothList=data
+
+          
          })
   }
   selectPrinter(macAddress:any){
