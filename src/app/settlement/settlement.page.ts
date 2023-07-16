@@ -378,9 +378,11 @@ checkBluetoothPermissions() {
     if (result.hasPermission) {
       // Permission granted
       // Proceed with Bluetooth operations
+      this.showAlert('granted')
     } else {
       // Permission denied
       // Request the permissions
+      this.showAlert('not granted ')
       this.requestBluetoothPermissions();
     }
   }).catch((error) => {
