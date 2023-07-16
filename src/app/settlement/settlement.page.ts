@@ -7,7 +7,7 @@ import { NgxPrinterService } from 'ngx-printer';
 import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
 import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 
 interface MyObject {
   'date' : string,
