@@ -7,7 +7,9 @@ import { NgxPrinterService } from 'ngx-printer';
 import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
 import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 interface MyObject {
   'date' : string,
@@ -36,12 +38,13 @@ export class SettlementPage {
     acceptAllDevices: true,
   };
 
-  constructor(private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
+  constructor(private androidPermissions: AndroidPermissions,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
     this.dataSource = new MatTableDataSource(this.tableData)  
   
 
 
     this.getData()
+    this.checkBluetoothPermissions()
     this.ionViewDidEnter()
     this.viewBill='daySale'
     // navigator.bluetooth.requestDevice(this.deviceOptions)
@@ -362,4 +365,29 @@ connectAndPrint() {
     console.log('Error connecting to printer', error);
   });
 }
+
+
+requestBluetoothPermissions() {
+  this.androidPermissions.requestPermissions([
+    this.androidPermissions.PERMISSION.BLUETOOTH,
+    this.androidPermissions.PERMISSION.BLUETOOTH_ADMIN,
+    this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION
+  ]);
+}
+checkBluetoothPermissions() {
+  this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH).then((result) => {
+    if (result.hasPermission) {
+      // Permission granted
+      // Proceed with Bluetooth operations
+    } else {
+      // Permission denied
+      // Request the permissions
+      this.requestBluetoothPermissions();
+    }
+  }).catch((error) => {
+    this.showAlert('Error checking Bluetooth permission')
+    console.log('Error checking Bluetooth permission', error);
+  });
+}
+
  }
