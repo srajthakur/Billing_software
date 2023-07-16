@@ -367,6 +367,7 @@ connectAndPrint() {
 
 
 requestBluetoothPermissions() {
+  this.showAlert('requestBluetoothPermissions called')
   this.androidPermissions.requestPermissions([
     this.androidPermissions.PERMISSION.BLUETOOTH,
     this.androidPermissions.PERMISSION.BLUETOOTH_ADMIN,
@@ -378,6 +379,7 @@ checkBluetoothPermissions() {
     if (result.hasPermission) {
       // Permission granted
       // Proceed with Bluetooth operations
+      this.requestBluetoothPermissions();
       this.showAlert('granted')
     } else {
       // Permission denied
