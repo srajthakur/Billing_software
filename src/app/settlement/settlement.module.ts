@@ -6,6 +6,7 @@ import { SettlementPage } from './settlement.page';
 
 import { SettlementPageRoutingModule } from './settlement-routing.module';
 import { MatTableModule } from '@angular/material/table';
+import { WebBluetoothModule } from '@manekinekko/angular-web-bluetooth';
 
 
 
@@ -16,7 +17,10 @@ import { MatTableModule } from '@angular/material/table';
     FormsModule,
     IonicModule,
     MatTableModule,
-    SettlementPageRoutingModule
+    SettlementPageRoutingModule,
+    WebBluetoothModule.forRoot({
+      enableTracing: false  
+    })
   ],
   declarations: [SettlementPage]
 })

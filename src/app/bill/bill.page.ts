@@ -4,6 +4,7 @@ import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { MatIconModule } from '@angular/material/icon';
+import { GoogleDriveService } from '../services/drive.service';
 
 interface MyObject {
   itemCode:string, 
@@ -48,7 +49,7 @@ export class BillPage implements OnInit {
 
   
 
-  constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage,private AlertController:AlertController,private renderer: Renderer2) { 
+  constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage,private AlertController:AlertController,private renderer: Renderer2,private googleDriveService: GoogleDriveService) { 
 
     this.today = new Date();
     this.dateString = this.today.toJSON().slice(0, 10); 
@@ -73,6 +74,7 @@ export class BillPage implements OnInit {
     })
     
     })
+    this.authorize()
   }
 
   focusNameField() {
@@ -200,7 +202,7 @@ export class BillPage implements OnInit {
   }
 
   clearItems() {
-    
+    this.saveData()
     this.phoneNumber = '';
     this.name = '';
     this.items = []; // Initialize with your data
@@ -376,6 +378,46 @@ navFun(data:string){
   }
 }
 
+options: string[] = ['Angular', 'React', 'Vue', 'TypeScript', 'JavaScript', 'HTML', 'CSS'];
+filteredOptions: string[] = [];
+
+onInputChange(event: any): void {
+  this.filterOptions();
+}
+
+filterOptions(): void {
+  if (this.phoneNumber) {
+    const filterValue = this.phoneNumber.toLowerCase();
+    this.filteredOptions = this.options.filter(option => option.toLowerCase().includes(filterValue));
+  } else {
+    this.filteredOptions = [];
+  }
+}
+
+onOptionSelected(option: string): void {
+  // Handle the selected option
+  this.phoneNumber=option
+  this.filteredOptions = [];
+  console.log('Selected option:', option);
+}
+
+
+async authorize(): Promise<void> {
+  await this.googleDriveService.authorize();
+  console.log('Authorization successful!');
+
+}
+
+async saveData(): Promise<void> {
+  console.log('savedata called!');
+  const data = {
+    example: 'data',
+    foo: 'bar'
+  };
+
+  await this.googleDriveService.saveDataToDrive(data);
+  console.log('Data saved to Google Drive!');
+}
 }
 
 

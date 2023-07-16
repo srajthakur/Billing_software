@@ -4,7 +4,7 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 @Injectable({
   providedIn: 'root'
 })
-export class PrintService {
+export class PrintServiceA {
   constructor(public btSerial:BluetoothSerial) {}
 
   searchBluetoothPrinter()

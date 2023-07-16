@@ -8,6 +8,8 @@ import { BillPageRoutingModule } from './bill-routing.module';
 import { MatTableModule } from '@angular/material/table';
 import { BillPage } from './bill.page';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   imports: [
@@ -16,7 +18,9 @@ import { MatIconModule } from '@angular/material/icon';
     IonicModule,
     MatTableModule,
     BillPageRoutingModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule,
+    MatFormFieldModule
   ],
   declarations: [BillPage]
 })

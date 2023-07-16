@@ -10,7 +10,7 @@ import { NavController } from '@ionic/angular';
 })
 export class LandingPage implements OnInit {
 
-  constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage) { 
+  constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage){    
     this.nativeStorage.getItem('logStatus').then(data=>{
       console.log(data,'innnnnnnnnnnnnnn')
       if(data == 'Login')
@@ -28,9 +28,12 @@ export class LandingPage implements OnInit {
   signupName: string= '';
   signupEmail: string= '';
   signupPassword: string= '';
+  folderId: string = '';
+  accessToken: string = '';
 
   
   toggleForm() {
+    
     this.showLoginForm = !this.showLoginForm;
   }
 
@@ -50,36 +53,9 @@ export class LandingPage implements OnInit {
       .then(() =>
       this.navCtrl.navigateForward('/bill'))
       .catch(error => console.error('Error storing data:', error));
-
-
-
-
-    // Write user login data to JSON file
-
-    
-    
     
   }
 
-//  async login() {
-//     // Perform signup logic here
-//     console.log(await Storage.keys())
-//     const raw_data = await Storage.get({key:this.loginEmail})
-    
-//     if (raw_data.value){
-//       let data= JSON.parse(raw_data.value)
-//       console.log(data);
-//       if (data.password == this.loginPassword){
-//         console.log('true')
-//         this.navCtrl.navigateForward('/pagebill')
-//       }
-//     }
-
-   
-//     console.log('kkkkkkkkkkkkkkkkkkkk');
-
-
-//   }
 
   async login() {
     // Retrieve the stored data from native storage
@@ -102,5 +78,7 @@ export class LandingPage implements OnInit {
       .catch(error => console.error('Error retrieving data:', error));
   }
 }
+
+
 
 
