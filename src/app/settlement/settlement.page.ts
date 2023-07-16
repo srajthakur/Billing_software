@@ -6,6 +6,8 @@ import { PrintServiceA } from '../services/print.service';
 import { NgxPrinterService } from 'ngx-printer';
 import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
 import { AlertController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 interface MyObject {
   'date' : string,
@@ -34,12 +36,13 @@ export class SettlementPage {
     acceptAllDevices: true,
   };
 
-  constructor(private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private printserviceAndroid: PrintServiceA,private printserviceWeb:NgxPrinterService) {
+  constructor(private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
     this.dataSource = new MatTableDataSource(this.tableData)  
   
 
 
     this.getData()
+    this.ionViewDidEnter()
     this.viewBill='daySale'
     // navigator.bluetooth.requestDevice(this.deviceOptions)
     // .then(device => {
@@ -188,7 +191,7 @@ export class SettlementPage {
   }
   print(date:any){
          this.printserviceAndroid.searchBluetoothPrinter().then(data=>{
-          this.bluetoothList=data
+          //this.bluetoothList=data
           
           this.showAlert(this.bluetoothList.length.toString())
          })
@@ -307,4 +310,52 @@ export class SettlementPage {
 //               })
 //               .catch(console.log('error in printing')); 
 //   }
+ionViewDidEnter() {
+  this.platform.ready().then(() => {
+    if (this.platform.is('android')) {
+      this.enableBluetooth();
+    } else {
+      console.log('Bluetooth printing is only available on Android devices.');
+      this.showAlert('Bluetooth printing is only available on Android devices.')
+    }
+    this.enableBluetooth()
+  });
+}
+enableBluetooth() {
+  this.bluetoothSerial.enable().then(() => {
+    this.listBluetoothDevices();
+  }).catch((error) => {
+    console.log('Error enabling Bluetooth', error);
+    this.showAlert('Error enabling Bluetooth')
+  });
+}
+
+listBluetoothDevices() {
+  this.bluetoothSerial.list().then((devices) => {
+    // devices is an array of available Bluetooth devices
+    // You can display them in a list and let the user select a device
+    this.bluetoothList=devices
+    console.log('Available Bluetooth Devices:', devices);
+  }).catch((error) => {
+    this.showAlert('Error listing Bluetooth devices')
+    console.log('Error listing Bluetooth devices', error);
+  });
+}
+connectAndPrint() {
+  this.bluetoothSerial.connect(this.selectedPrinter).subscribe(() => {
+    console.log('Connected to printer');
+
+    // Send data to the printer
+    const data = 'Hello, printer!';
+    this.bluetoothSerial.write(data).then(() => {
+      console.log('Data sent to printer');
+    }).catch((error) => {
+      this.showAlert('Data sent to printer')
+      console.log('Error sending data to printer', error);
+    });
+  }, (error) => {
+    this.showAlert('Error connecting to printer')
+    console.log('Error connecting to printer', error);
+  });
+}
  }
