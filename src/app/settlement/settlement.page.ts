@@ -387,7 +387,7 @@ checkBluetoothPermissions() {
     }
   }).catch((error) => {
     this.showAlert('Error checking Bluetooth permission')
-    console.log('Error checking Bluetooth permission', error);
+    console.log('Error checking Bluetooth permiss ion', error);
   });
 }
 
