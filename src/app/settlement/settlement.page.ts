@@ -317,8 +317,9 @@ ionViewDidEnter() {
     } else {
       console.log('Bluetooth printing is only available on Android devices.');
       this.showAlert('Bluetooth printing is only available on Android devices.')
+      this.enableBluetooth()
     }
-    this.enableBluetooth()
+    
   });
 }
 enableBluetooth() {
