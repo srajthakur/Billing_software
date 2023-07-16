@@ -3,8 +3,7 @@ import { NavController } from '@ionic/angular';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { MatTableDataSource ,MatTableModule} from '@angular/material/table';
 import { PrintServiceA } from '../services/print.service';
-import { NgxPrinterService } from 'ngx-printer';
-import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
+
 import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
