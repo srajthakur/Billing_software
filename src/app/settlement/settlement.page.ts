@@ -5,6 +5,7 @@ import { MatTableDataSource ,MatTableModule} from '@angular/material/table';
 import { PrintServiceA } from '../services/print.service';
 import { NgxPrinterService } from 'ngx-printer';
 import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
+import { AlertController } from '@ionic/angular';
 
 interface MyObject {
   'date' : string,
@@ -33,7 +34,7 @@ export class SettlementPage {
     acceptAllDevices: true,
   };
 
-  constructor(private navCtrl: NavController,private nativeStorage:NativeStorage,private printserviceAndroid: PrintServiceA,private printserviceWeb:NgxPrinterService) {
+  constructor(private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private printserviceAndroid: PrintServiceA,private printserviceWeb:NgxPrinterService) {
     this.dataSource = new MatTableDataSource(this.tableData)  
   
 
@@ -81,56 +82,56 @@ export class SettlementPage {
     //   console.error('Bluetooth error:', error);
     // });
     // console.log('afterrrrrrrrrr')
-//     navigator.bluetooth.requestDevice({
-//       filters: [{
-//         services: ['000018f0-0000-1000-8000-00805f9b34fb']
-//       }]
-//     })
-//   .then(device => {
-//     // Process the selected Bluetooth device
-//     console.log('Selected Device:', device.name);
+    navigator.bluetooth.requestDevice({
+      filters: [{
+        services: ['000018f0-0000-1000-8000-00805f9b34fb']
+      }]
+    })
+  .then(device => {
+    // Process the selected Bluetooth device
+    console.log('Selected Device:', device.name);
 
-//     device.gatt?.connect()
-//       .then(gattServer => {
-//         console.log('Connected to GATT server:', gattServer);
-//         // Proceed with printing
-//         const serviceUUID = '000018f0-0000-1000-8000-00805f9b34fb'
-//         const characteristicUUID = '00002af1-0000-1000-8000-00805f9b34fb';
-//         console.log('000018f0-0000-1000-8000-00805f9b34fb')
-//         console.log(device.name)
-//         console.log('00002af1-0000-1000-8000-00805f9b34fb')
-//         console.log(device.id)
+    device.gatt?.connect()
+      .then(gattServer => {
+        console.log('Connected to GATT server:', gattServer);
+        // Proceed with printing
+        const serviceUUID = '000018f0-0000-1000-8000-00805f9b34fb'
+        const characteristicUUID = '00002af1-0000-1000-8000-00805f9b34fb';
+        console.log('000018f0-0000-1000-8000-00805f9b34fb')
+        console.log(device.name)
+        console.log('00002af1-0000-1000-8000-00805f9b34fb')
+        console.log(device.id)
 
-//         gattServer.getPrimaryService(serviceUUID)
-//           .then(service => {
-//             console.log('In service');
-//             return service.getCharacteristic(characteristicUUID);
-//           })
-//           .then(characteristic => {
-//             const printData = 'your-print-command-data';
-//             this.characteristic=characteristic
-//             // //characteristic.writeValue(new TextEncoder().encode('Hello Hello Hello Hello' + '\u000A\u000D'))
-//             //   .then(() => {
-//             //     console.log('Print command sent successfully');
-//             //   })
-//             //   .catch(error => {
-//             //     console.error('Error sending print command:', error);
-//             //   });
-//             // Proceed with printing using the characteristic
-//           })
-//           .catch(error => {
-//             console.error('Error retrieving service or characteristic:', error);
-//           });
-//       })
-//       .catch(error => {
-//         console.error('Error connecting to GATT server:', error);
-//       });
-//   })
-//   .catch(error => {
-//     console.error('Bluetooth error:', error);
-//   });
+        gattServer.getPrimaryService(serviceUUID)
+          .then(service => {
+            console.log('In service');
+            return service.getCharacteristic(characteristicUUID);
+          })
+          .then(characteristic => {
+            const printData = 'your-print-command-data';
+            this.characteristic=characteristic
+            // //characteristic.writeValue(new TextEncoder().encode('Hello Hello Hello Hello' + '\u000A\u000D'))
+            //   .then(() => {
+            //     console.log('Print command sent successfully');
+            //   })
+            //   .catch(error => {
+            //     console.error('Error sending print command:', error);
+            //   });
+            // Proceed with printing using the characteristic
+          })
+          .catch(error => {
+            console.error('Error retrieving service or characteristic:', error);
+          });
+      })
+      .catch(error => {
+        console.error('Error connecting to GATT server:', error);
+      });
+  })
+  .catch(error => {
+    console.error('Bluetooth error:', error);
+  });
 
-// console.log('afterrrrrrrrrr');
+console.log('afterrrrrrrrrr');
 
 
   }
@@ -179,11 +180,17 @@ export class SettlementPage {
       this.dataSource = new MatTableDataSource(td)
     })
   }
+  async showAlert(message:any) {
+    const alert = await this.AlertController.create({
+      message: message,
+      buttons: ['OK']
+    });  await alert.present();
+  }
   print(date:any){
          this.printserviceAndroid.searchBluetoothPrinter().then(data=>{
           this.bluetoothList=data
-
           
+          this.showAlert(this.bluetoothList.length.toString())
          })
   }
   selectPrinter(macAddress:any){
