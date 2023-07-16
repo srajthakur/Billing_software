@@ -327,6 +327,7 @@ enableBluetooth() {
     this.listBluetoothDevices();
   }).catch((error) => {
     console.log('Error enabling Bluetooth', error);
+    this.listBluetoothDevices();
     this.showAlert('Error enabling Bluetooth')
   });
 }
@@ -335,7 +336,9 @@ listBluetoothDevices() {
   this.bluetoothSerial.list().then((devices) => {
     // devices is an array of available Bluetooth devices
     // You can display them in a list and let the user select a device
+    this.showAlert('Called succesfully')
     this.bluetoothList=devices
+    this.showAlert(this.bluetoothList.toString())
     console.log('Available Bluetooth Devices:', devices);
   }).catch((error) => {
     this.showAlert('Error listing Bluetooth devices')
