@@ -7,7 +7,7 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: '',
+    path: 'dd',
     loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
   },
   {
@@ -19,7 +19,7 @@ const routes: Routes = [
     loadChildren: () => import('./rate/rate.module').then( m => m.RatePageModule)
   },
   {
-    path: 'setting',
+    path: '',
     loadChildren: () => import('./setting/setting.module').then( m => m.SettingPageModule)
   },
   {

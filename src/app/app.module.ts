@@ -12,6 +12,9 @@ import { MatIconModule } from '@angular/material/icon';
 import {BluetoothSerial} from '@ionic-native/bluetooth-serial/ngx';
 import { NgxPrinterModule } from 'ngx-printer';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { File } from '@ionic-native/file/ngx';
+
 
 
 
@@ -19,7 +22,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,MatIconModule,NgxPrinterModule],
-  providers: [NativeStorage,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },BluetoothSerial,AndroidPermissions],
+  providers: [NativeStorage,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },BluetoothSerial,AndroidPermissions,File,FileChooser],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

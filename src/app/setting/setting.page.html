@@ -26,3 +26,21 @@
 
   </ion-toolbar>
 </ion-header>
+
+  
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Shop Name</ion-label>
+        <ion-input [(ngModel)]="shopName" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Contact Number</ion-label>
+        <ion-input [(ngModel)]="contactNumber" type="tel"></ion-input>
+      </ion-item>
+    </ion-list>
+  
+    <ion-button expand="full" (click)="importData()">Import</ion-button>
+    <ion-button expand="full" (click)="exportData()">Export</ion-button>
+  </ion-content>
+  

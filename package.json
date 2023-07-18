@@ -29,6 +29,8 @@
     "@ionic-native/android-permissions": "^5.36.0",
     "@ionic-native/bluetooth-serial": "^5.36.0",
     "@ionic-native/core": "^5.36.0",
+    "@ionic-native/file": "^5.36.0",
+    "@ionic-native/file-chooser": "^5.36.0",
     "@ionic-native/native-storage": "^5.36.0",
     "@ionic/angular": "^7.0.0",
     "@ionic/cordova-builders": "^9.0.0",
@@ -42,6 +44,7 @@
     "rxjs": "~7.8.0",
     "thermal-printer-cordova-plugin": "^1.0.6",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {
@@ -68,13 +71,18 @@
     "cordova-plugin-bluetooth-serial": "^0.4.7",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-file": "^7.0.0",
+    "cordova-plugin-file-chooser": "^1.0.1",
     "cordova-plugin-file-opener2": "^4.0.0",
+    "cordova-plugin-filechooser": "^1.2.0",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^5.0.0",
     "cordova-plugin-nativestorage": "^2.3.2",
     "cordova-plugin-printer": "^0.8.0",
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-statusbar": "2.4.2",
+    "electron": "^25.3.0",
+    "electron-builder": "^24.4.0",
+    "electron-packager": "^17.1.1",
     "eslint": "^7.26.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
@@ -103,12 +111,12 @@
       "cordova-plugin-printer": {},
       "cordova-plugin-androidx": {},
       "cordova-plugin-androidx-adapter": {},
-      "cordova-plugin-file": {
-        "ANDROIDX_WEBKIT_VERSION": "1.4.0"
-      },
+      "cordova-plugin-file": {},
       "cordova-plugin-file-opener2": {},
       "cordova-plugin-bluetooth-serial": {},
-      "cordova-plugin-android-permissions": {}
+      "cordova-plugin-android-permissions": {},
+      "com.cesidiodibenedetto.filechooser": {},
+      "cordova-plugin-filechooser": {}
     },
     "platforms": [
       "browser",
