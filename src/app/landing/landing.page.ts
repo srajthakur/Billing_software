@@ -9,15 +9,39 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./landing.page.scss'],
 })
 export class LandingPage implements OnInit {
-
+  today = new Date();
+  dateString = this.today.toJSON().slice(0, 10);
+  date :string
   constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage){    
+    console.log('alhasdaskf;lhnkldsafj')
+    this.date =  this.getDate(7)
+    setTimeout(()=>    {   
+      console.log('datetodelete',this.date)
+      this.nativeStorage.remove(this.date) 
+      this.nativeStorage.getItem('backupdate').then(data=>{
+      console.log('backupdate======================',data)
+      if (this.dateString != data){
+        this.downloadBackupFile()
+      }
+          
+    }).catch(data=>{
+      console.log('yoooooooooooooooooooooooo')
+      this.nativeStorage.setItem("backupdate",this.dateString)
+    }
+     
+    )
     this.nativeStorage.getItem('logStatus').then(data=>{
-      console.log(data,'innnnnnnnnnnnnnn')
+      console.log('logining data' ,data)
       if(data == 'Login')
       {
         this.navCtrl.navigateForward('/bill');
       }
     })
+     
+
+
+  },20000)
+
   }
 
   ngOnInit() {
@@ -37,7 +61,56 @@ export class LandingPage implements OnInit {
     this.showLoginForm = !this.showLoginForm;
   }
 
+  downloadBackupFile() {
+    this.nativeStorage.keys()
+      .then((keys: string[]) => {
+        const dataToBackup: { [key: string]: any } = {};
 
+        // Fetch all data from NativeStorage
+        const fetchPromises = keys.map((key: string) => {
+          return this.nativeStorage.getItem(key)
+            .then((data) => {
+              dataToBackup[key] = data;
+            });
+        });
+
+        // Wait for all data to be fetched before proceeding to backup
+        Promise.all(fetchPromises)
+          .then(() => {
+            try {
+              // Convert the data to JSON format
+              const jsonData = JSON.stringify(dataToBackup);
+
+              // Create a Blob with the JSON data
+              const blob = new Blob([jsonData], { type: 'application/json' });
+
+              // Create a download link for the Blob
+              const downloadLink = document.createElement('a');
+              downloadLink.href = URL.createObjectURL(blob);
+              downloadLink.download = 'backdata.json'; // Set the desired file name
+
+              // Append the download link to the DOM and trigger the download
+              document.body.appendChild(downloadLink);
+              downloadLink.click();
+
+              // Clean up after the download
+              URL.revokeObjectURL(downloadLink.href);
+              document.body.removeChild(downloadLink);
+
+              console.log('Backup file downloaded successfully.');
+            } catch (error) {
+              console.error('Error converting data to JSON:', error);
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching data from NativeStorage:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error retrieving keys from NativeStorage:', error);
+      });
+      this.nativeStorage.setItem("backupdate",this.dateString)
+  }
   
   signup() {
     // Perform login logic here
@@ -76,6 +149,15 @@ export class LandingPage implements OnInit {
         }
       })
       .catch(error => console.error('Error retrieving data:', error));
+  }
+   getDate(n: number) {
+    const today = new Date();
+    console.log(today)
+    const date = new Date(today.getTime() - n * 24 * 60 * 60 * 1000);
+  
+    const dateString = date.toISOString().slice(0, 10);
+    
+    return dateString;
   }
 }
 

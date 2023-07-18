@@ -117,6 +117,9 @@ export class RatePage {
     else if (data == 'SETTING'){
       this.navCtrl.navigateForward('/setting')
     }
+    else if (data == 'CUSTOMER'){
+      this.navCtrl.navigateForward('/customer')
+    }
     else if (data == 'LOGOUT'){
       console.log(this.nativeStorage.getItem('logStatus'))
       this.nativeStorage.setItem('logStatus','Logout')

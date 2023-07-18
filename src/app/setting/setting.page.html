@@ -12,6 +12,9 @@
       <ion-button (click)="navFun('SETTLEMENT')" class="custom-button">
         Settlement
       </ion-button>
+      <ion-button (click)="navFun('CUSTOMER')" class="custom-button">
+        Customer
+      </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
@@ -54,9 +57,23 @@
           <ion-icon slot="end" name="cloud-upload"></ion-icon>
         </ion-button>
       </ion-col>
+      <ion-col size="12">
+        <h6 class="h6-heading">Products Upload &nbsp;
+          
+        </h6>
+      </ion-col>
+      <ion-col size-sm="3" size="8">
+        <ion-input 
+         type="file" accept=".json" (change)="fileupload($event)"></ion-input>
+      </ion-col>
+      <ion-col size-sm="2" size="4">
+        <ion-button type="submit" (click)="backupToSystem()">Retriving data
+          <ion-icon slot="end" name="cloud-upload"></ion-icon>
+        </ion-button>
+      </ion-col>
     </ion-row>
   
-    <ion-button expand="full" type= 'file' (click)="importData()">Import</ion-button>
+    <ion-button expand="full" type= 'file' (click)="downloadBackupFile()">Create Backup</ion-button>
     <ion-button expand="full" (click)="exportData()">Export</ion-button>
   </ion-content>
   

@@ -7,7 +7,7 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'dd',
+    path: '',
     loadChildren: () => import('./landing/landing.module').then( m => m.LandingPageModule)
   },
   {
@@ -19,12 +19,16 @@ const routes: Routes = [
     loadChildren: () => import('./rate/rate.module').then( m => m.RatePageModule)
   },
   {
-    path: '',
+    path: 'setting',
     loadChildren: () => import('./setting/setting.module').then( m => m.SettingPageModule)
   },
   {
     path: 'settlement',
     loadChildren: () => import('./settlement/settlement.module').then( m => m.SettlementPageModule)
+  },
+  {
+    path: 'customer',
+    loadChildren: () => import('./customer/customer.module').then( m => m.CustomerPageModule)
   },
 ];
 

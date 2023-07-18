@@ -223,6 +223,9 @@ export class SettlementPage {
     else if (data == 'SETTLEMENT'){
       this.navCtrl.navigateForward('/settlement')
     }
+    else if (data == 'CUSTOMER'){
+      this.navCtrl.navigateForward('/customer')
+    }
     else if (data == 'SETTING'){
       this.navCtrl.navigateForward('/setting')
     }

@@ -307,7 +307,7 @@ export class BillPage implements OnInit {
     this.nativeStorage.getItem(this.dateString).then(data=>{
       console.log('date already created succesfully')
       // this.nativeStorage.setItem('customer', {})
-      this.showAlert('Welcome')
+      //this.showAlert('Welcome')
       
     }).catch(data=>{
       this.nativeStorage.setItem(this.dateString, [{}])
@@ -368,6 +368,9 @@ navFun(data:string){
   else if (data == 'SETTLEMENT'){
     this.navCtrl.navigateForward('/settlement')
   }
+  else if (data == 'CUSTOMER'){
+    this.navCtrl.navigateForward('/customer')
+  }
   else if (data == 'SETTING'){
     this.navCtrl.navigateForward('/setting')
   }
@@ -424,7 +427,7 @@ async saveData(): Promise<void> {
 
 
 
-
+//customer 
 
 
 

@@ -32,6 +32,9 @@ export class SettingPage {
     else if (data == 'SETTING'){
       this.navCtrl.navigateForward('/setting')
     }
+    else if (data == 'CUSTOMER'){
+      this.navCtrl.navigateForward('/customer')
+    }
     else if (data == 'LOGOUT'){
       console.log(this.nativeStorage.getItem('logStatus'))
       this.nativeStorage.setItem('logStatus','Logout')
@@ -113,8 +116,8 @@ export class SettingPage {
 
       if (importedData && importedData.length > 0) {
         // Extract number and name columns from imported data
-        const importedNumbers = importedData.map(row => row[0]);
-        const importedNames = importedData.map(row => row[1]);
+        const importedNames = importedData.map(row => row[0]);
+        const importedNumbers = importedData.map(row => row[1]);
       // Get existing customer data from native storage
       this.nativeStorage.getItem('customer')
       .then(existingData => {
@@ -195,7 +198,7 @@ export class SettingPage {
     const customer :customer = {};
   
     for (let i = 0; i < numbers.length; i++) {
-      if (numbers[i] != undefined && names[i]!=undefined){
+      if (numbers[i] != undefined && names[i]!=undefined && numbers[i].length>9){
         customer[numbers[i]] = names[i];
       }
       }
@@ -227,6 +230,101 @@ export class SettingPage {
         console.error('Error retrieving customer data:', error);
       });
   }
+
+
+  downloadBackupFile() {
+    this.nativeStorage.keys()
+      .then((keys: string[]) => {
+        const dataToBackup: { [key: string]: any } = {};
+
+        // Fetch all data from NativeStorage
+        const fetchPromises = keys.map((key: string) => {
+          return this.nativeStorage.getItem(key)
+            .then((data) => {
+              dataToBackup[key] = data;
+            });
+        });
+
+        // Wait for all data to be fetched before proceeding to backup
+        Promise.all(fetchPromises)
+          .then(() => {
+            try {
+              // Convert the data to JSON format
+              const jsonData = JSON.stringify(dataToBackup);
+
+              // Create a Blob with the JSON data
+              const blob = new Blob([jsonData], { type: 'application/json' });
+
+              // Create a download link for the Blob
+              const downloadLink = document.createElement('a');
+              downloadLink.href = URL.createObjectURL(blob);
+              downloadLink.download = 'backdata.json'; // Set the desired file name
+
+              // Append the download link to the DOM and trigger the download
+              document.body.appendChild(downloadLink);
+              downloadLink.click();
+
+              // Clean up after the download
+              URL.revokeObjectURL(downloadLink.href);
+              document.body.removeChild(downloadLink);
+
+              console.log('Backup file downloaded successfully.');
+            } catch (error) {
+              console.error('Error converting data to JSON:', error);
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching data from NativeStorage:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error retrieving keys from NativeStorage:', error);
+      });
+  }
+  backupToSystem() {
+    this.nativeStorage.clear()
+ 
+  
+    const file = this.importFile
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const jsonData: { [key: string]: any } = JSON.parse(reader.result as string);
+          console.log('JSON Data:', jsonData);
+
+          // Save the data to NativeStorage
+          const savePromises = Object.entries(jsonData).map(([key, data]) => {
+            return this.nativeStorage.setItem(key, data)
+              .then(() => {
+                console.log(`Data for key "${key}" saved to NativeStorage successfully.`);
+              })
+              .catch((error) => {
+                console.error(`Error saving data for key "${key}":`, error);
+              });
+          });
+
+          // Wait for all data to be saved before proceeding
+          Promise.all(savePromises)
+            .then(() => {
+              console.log('All data saved to NativeStorage.');
+            })
+            .catch((error) => {
+              console.error('Error saving data to NativeStorage:', error);
+            });
+        } catch (error) {
+          console.error('Error parsing JSON data:', error);
+        }
+      };
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+      };
+
+      reader.readAsText(file);
+    }
+  }
+
   
 
 }
