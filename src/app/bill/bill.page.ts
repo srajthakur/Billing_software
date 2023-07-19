@@ -1,4 +1,4 @@
-import { Component, ViewChild,ElementRef,OnInit,Renderer2,AfterViewInit } from '@angular/core';
+import { Component, ViewChild,ElementRef,OnInit,Renderer2,AfterViewInit ,HostListener} from '@angular/core';
 import { MatTableDataSource , MatTableModule} from '@angular/material/table';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { NavController } from '@ionic/angular';
@@ -21,7 +21,7 @@ interface MyObject {
 })
 
 export class BillPage implements OnInit {
-
+  @ViewChild('codeItem', { static: true }) myInputRef!: ElementRef<HTMLInputElement>;
 
   phoneNumber: string;
   name: any;
@@ -57,7 +57,8 @@ export class BillPage implements OnInit {
     private nativeStorage:NativeStorage,
     private AlertController:AlertController,
     private renderer: Renderer2,
-    private googleDriveService: GoogleDriveService) { 
+    private googleDriveService: GoogleDriveService,
+    private elementRef:ElementRef) { 
 
     this.today = new Date();
     this.dateString = this.today.toJSON().slice(0, 10); 
@@ -99,6 +100,22 @@ export class BillPage implements OnInit {
 
 
     this.filteredOptions= [];
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    // Check if the key pressed is "F1"
+    if (event.key === 'F1') {
+      // Prevent the default browser behavior for the F1 key press
+      event.preventDefault();
+      // Call the method to handle the F1 key press
+      
+      this.addItem();
+    } else if (this.paymentMethod && event.key === 'Escape') {
+      console.log('generate.button')
+      event.preventDefault(); // Prevent the default browser behavior for ESC key press
+      this.generateBill();
+    }
   }
 
   focusNameField() {
@@ -144,8 +161,12 @@ export class BillPage implements OnInit {
     this.total_fun()
   }
 
-  addItem() {
+ async addItem() {
     // Logic to add an item to the list
+    if (this.myInputRef) {
+      this.myInputRef.nativeElement.focus();
+    }
+    
     this.isAddButtonClicked =!this.isAddButtonClicked;
     if (parseInt(this.itemcode)<=10000 && this.isAddButtonClicked==false){
       for(let i=0;i<this.tableData.length;i++){

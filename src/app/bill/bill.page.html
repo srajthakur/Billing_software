@@ -1,3 +1,5 @@
+
+
 <ion-header>
   <ion-toolbar>
 
@@ -78,7 +80,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
       </ion-col>
-      <ion-col size="4"  *ngIf="!isAddButtonClicked && !isUpdateButtonClicked">
+      <ion-col size="4"  *ngIf="!isAddButtonClicked && !isUpdateButtonClicked" (keydown)="onKeyDown($event)">
         <ion-button expand="full" (click)="addItem()">Add</ion-button>
         <ion-button expand="full"  [disabled] = '(tableData.length == 0 && !stashed) || this.generateUpdateBill' (click)="stashBill(stashed ? 'unstash':'stash')">{{stashed ? 'un':''}}stash</ion-button>
         <ion-button expand="full"  [disabled] = "this.generateUpdateBill" (click)="updateItems()">Update</ion-button>
@@ -109,7 +111,7 @@
       </ion-col>
 
       <ion-col size="4"  *ngIf="isAddButtonClicked">
-        <ion-input id="phoneid" placeholder="Item Code" [(ngModel)]="itemcode"></ion-input>
+        <ion-input id="phoneid" placeholder="Item Code" [(ngModel)]="itemcode" id="codeItem"></ion-input>
         <ion-input id="phoneid" placeholder="Item Quandity" [(ngModel)]="itemquandity"></ion-input>
         <ion-button expand="full" (click)="addItem()">Add</ion-button>
         <ion-button expand="full" (click)="back()">back</ion-button>
@@ -135,6 +137,4 @@
     <ion-label>Total Amount: {{ totalAmount }}</ion-label>
   </ion-toolbar>
 </ion-footer>
-
-
 

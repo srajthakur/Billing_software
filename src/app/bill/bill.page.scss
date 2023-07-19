@@ -73,3 +73,12 @@ mat-option.highlighted {
 }
 
 
+.container {
+  width: 100%;
+  height:100%;
+  /* Set a maximum width to limit the content size if needed */
+  margin: 0 auto; /* Center the container horizontally */
+ /* Add some padding to the container */
+  background-color: #f0f0f0;
+  text-align: center;
+}
