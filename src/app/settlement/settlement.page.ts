@@ -9,6 +9,7 @@ import { Platform } from '@ionic/angular';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { ApiService } from '../services/api.service';
 
 interface MyObject {
   'date' : string,
@@ -37,14 +38,14 @@ export class SettlementPage {
     acceptAllDevices: true,
   };
 
-  constructor(private androidPermissions: AndroidPermissions,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
+  constructor(private apiService: ApiService,private androidPermissions: AndroidPermissions,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
     this.dataSource = new MatTableDataSource(this.tableData)  
   
 
 
     this.getData()
-    this.checkBluetoothPermissions()
-    this.ionViewDidEnter()
+    // this.checkBluetoothPermissions()
+    // this.ionViewDidEnter()
     this.viewBill='daySale'
     // navigator.bluetooth.requestDevice(this.deviceOptions)
     // .then(device => {
@@ -170,11 +171,31 @@ export class SettlementPage {
     
   
   }
+  printThroughWebApiServices(date:any){
+    console.log(date)
+    this.nativeStorage.getItem(date).then((data)=>{
+      
+      
+    }).catch(data=>
+      this.showAlert('error in retriving data'))
 
+
+    this.nativeStorage.getItem(date).then(data=>{
+    this.apiService.printSettlement(data).subscribe(
+      (response) => {
+        // Handle the response from the server after printing the settlement
+        console.log('Printing response:', response);
+      },
+      (error) => {
+        console.error('Error printing settlement:', error);
+      }
+    );
+      })
+    
+  }
   viewDaySale(date:any) {
     const td=[{}]
-    
-    console.log('dsl;jjfgg;jk')
+    console.log(date)
     this.nativeStorage.getItem(date).then(data=>{
       this.displayedColumns =['billNo','totalItem','totalQuantity','totalAmount','paymentMethod']
       this.viewBill='allBill'
@@ -315,85 +336,89 @@ export class SettlementPage {
 //               })
 //               .catch(console.log('error in printing')); 
 //   }
-ionViewDidEnter() {
-  this.platform.ready().then(() => {
-    if (this.platform.is('android')) {
-      this.enableBluetooth();
-    } else {
-      console.log('Bluetooth printing is only available on Android devices.');
-      this.showAlert('Bluetooth printing is only available on Android devices.')
-      this.enableBluetooth()
-    }
+// ionViewDidEnter() {
+//   this.platform.ready().then(() => {
+//     if (this.platform.is('android')) {
+//       this.enableBluetooth();
+//     } else {
+//       console.log('Bluetooth printing is only available on Android devices.');
+//       this.showAlert('Bluetooth printing is only available on Android devices.')
+//       this.enableBluetooth()
+//     }
     
-  });
-}
-enableBluetooth() {
-  this.bluetoothSerial.enable().then(() => {
-    this.listBluetoothDevices();
-  }).catch((error) => {
-    console.log('Error enabling Bluetooth', error);
-    this.listBluetoothDevices();
-    this.showAlert('Error enabling Bluetooth')
-  });
-}
+//   });
+// }
+// enableBluetooth() {
+//   this.bluetoothSerial.enable().then(() => {
+//     this.listBluetoothDevices();
+//   }).catch((error) => {
+//     console.log('Error enabling Bluetooth', error);
+//     this.listBluetoothDevices();
+//     this.showAlert('Error enabling Bluetooth')
+//   });
+// }
 
-listBluetoothDevices() {
-  this.bluetoothSerial.list().then((devices) => {
-    // devices is an array of available Bluetooth devices
-    // You can display them in a list and let the user select a device
-    this.showAlert('Called succesfully')
-    this.bluetoothList=devices
-    this.showAlert(this.bluetoothList.toString())
-    console.log('Available Bluetooth Devices:', devices);
-  }).catch((error) => {
-    this.showAlert('Error listing Bluetooth devices')
-    console.log('Error listing Bluetooth devices', error);
-  });
-}
-connectAndPrint() {
-  this.bluetoothSerial.connect(this.selectedPrinter).subscribe(() => {
-    console.log('Connected to printer');
+// listBluetoothDevices() {
+//   this.bluetoothSerial.list().then((devices) => {
+//     // devices is an array of available Bluetooth devices
+//     // You can display them in a list and let the user select a device
+//     this.showAlert('Called succesfully')
+//     this.bluetoothList=devices
+//     this.showAlert(this.bluetoothList.toString())
+//     console.log('Available Bluetooth Devices:', devices);
+//   }).catch((error) => {
+//     this.showAlert('Error listing Bluetooth devices')
+//     console.log('Error listing Bluetooth devices', error);
+//   });
+// }
+// connectAndPrint() {
+//   this.bluetoothSerial.connect(this.selectedPrinter).subscribe(() => {
+//     console.log('Connected to printer');
 
-    // Send data to the printer
-    const data = 'Hello, printer!';
-    this.bluetoothSerial.write(data).then(() => {
-      console.log('Data sent to printer');
-    }).catch((error) => {
-      this.showAlert('Data sent to printer')
-      console.log('Error sending data to printer', error);
-    });
-  }, (error) => {
-    this.showAlert('Error connecting to printer')
-    console.log('Error connecting to printer', error);
-  });
-}
+//     // Send data to the printer
+//     const data = 'Hello, printer!';
+//     this.bluetoothSerial.write(data).then(() => {
+//       console.log('Data sent to printer');
+//     }).catch((error) => {
+//       this.showAlert('Data sent to printer')
+//       console.log('Error sending data to printer', error);
+//     });
+//   }, (error) => {
+//     this.showAlert('Error connecting to printer')
+//     console.log('Error connecting to printer', error);
+//   });
+// }
 
 
-requestBluetoothPermissions() {
-  this.showAlert('requestBluetoothPermissions called')
-  this.androidPermissions.requestPermissions([
-    this.androidPermissions.PERMISSION.BLUETOOTH,
-    this.androidPermissions.PERMISSION.BLUETOOTH_ADMIN,
-    this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION
-  ]);
-}
-checkBluetoothPermissions() {
-  this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH).then((result) => {
-    if (result.hasPermission) {
-      // Permission granted
-      // Proceed with Bluetooth operations
-      this.requestBluetoothPermissions();
-      this.showAlert('granted')
-    } else {
-      // Permission denied
-      // Request the permissions
-      this.showAlert('not granted ')
-      this.requestBluetoothPermissions();
-    }
-  }).catch((error) => {
-    this.showAlert('Error checking Bluetooth permission')
-    console.log('Error checking Bluetooth permiss ion', error);
-  });
-}
+// requestBluetoothPermissions() {
+//   this.showAlert('requestBluetoothPermissions called')
+//   this.androidPermissions.requestPermissions([
+//     this.androidPermissions.PERMISSION.BLUETOOTH,
+//     this.androidPermissions.PERMISSION.BLUETOOTH_ADMIN,
+//     this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION
+//   ]);
+// }
+// checkBluetoothPermissions() {
+//   this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.BLUETOOTH).then((result) => {
+//     if (result.hasPermission) {
+//       // Permission granted
+//       // Proceed with Bluetooth operations
+//       this.requestBluetoothPermissions();
+//       this.showAlert('granted')
+//     } else {
+//       // Permission denied
+//       // Request the permissions
+//       this.showAlert('not granted ')
+//       this.requestBluetoothPermissions();
+//     }
+//   }).catch((error) => {
+//     this.showAlert('Error checking Bluetooth permission')
+//     console.log('Error checking Bluetooth permiss ion', error);
+//   });
+// } /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                                 ////for web with api///////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
  }

@@ -40,7 +40,7 @@ export class LandingPage implements OnInit {
      
 
 
-  },20000)
+  },5000)
 
   }
 

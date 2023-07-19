@@ -14,6 +14,7 @@ import { NgxPrinterModule } from 'ngx-printer';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -21,7 +22,7 @@ import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,MatIconModule,NgxPrinterModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,MatIconModule,NgxPrinterModule,HttpClientModule],
   providers: [NativeStorage,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },BluetoothSerial,AndroidPermissions,File,FileChooser],
   bootstrap: [AppComponent],
 })

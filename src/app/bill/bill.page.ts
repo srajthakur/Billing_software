@@ -24,7 +24,7 @@ export class BillPage implements OnInit {
 
 
   phoneNumber: string;
-  name: string;
+  name: any;
   billNumber: number=0;
   items: any[]; // Replace with your actual data structure
   dataSource: MatTableDataSource<any>;
@@ -45,11 +45,19 @@ export class BillPage implements OnInit {
   updateBillNumber:any=''
   generateUpdateBill : boolean =false
   rate:any
+  options: string[] =[]
+  customerData:any
+  filteredOptions: string[] 
 
 
   
 
-  constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage,private AlertController:AlertController,private renderer: Renderer2,private googleDriveService: GoogleDriveService) { 
+  constructor(
+    private navCtrl:NavController ,
+    private nativeStorage:NativeStorage,
+    private AlertController:AlertController,
+    private renderer: Renderer2,
+    private googleDriveService: GoogleDriveService) { 
 
     this.today = new Date();
     this.dateString = this.today.toJSON().slice(0, 10); 
@@ -75,6 +83,22 @@ export class BillPage implements OnInit {
     
     })
     this.authorize()
+    setTimeout(()=>{
+      this.nativeStorage.getItem('customer').then(data=>{
+        this.customerData=data
+        console.log(this.customerData)
+        for (const key in data) {
+          console.log(key); // 'key1', 'key2'
+          this.options.push(key)
+        }
+
+        
+        console.log(this.options)
+      })
+    },15000)
+
+
+    this.filteredOptions= [];
   }
 
   focusNameField() {
@@ -235,6 +259,8 @@ export class BillPage implements OnInit {
   }
 
   generateBill() {
+    this.today = new Date();
+    this.dateString = this.today.toJSON().slice(0, 10); 
     console.log(this.dateString)
     if (!this.generateUpdateBill){
     if (this.name=='' ){
@@ -253,9 +279,13 @@ export class BillPage implements OnInit {
     this.nativeStorage.getItem('customer').then(data=>{
       
       data[this.phoneNumber]=this.name
-
+      
       this.nativeStorage.setItem('customer',data)
-
+      this.customerData=data
+      if (!(this.options.includes(this.phoneNumber))) {
+            this.options.push(this.phoneNumber)
+      } 
+      
 
     }).catch(data=>{
 
@@ -270,7 +300,8 @@ export class BillPage implements OnInit {
       'totalQuantity' : this.totalQuantity,
       'totalAmount'   : this.totalAmount,
       'totalItems'    : this.totalItems,
-      'paymentMethod' : this.paymentMethod
+      'paymentMethod' : this.paymentMethod,
+      'billNumber'    : this.billNumber
       }
       data[data.length]=indata  
       console.log(data)
@@ -381,8 +412,7 @@ navFun(data:string){
   }
 }
 
-options: string[] = ['Angular', 'React', 'Vue', 'TypeScript', 'JavaScript', 'HTML', 'CSS'];
-filteredOptions: string[] = [];
+
 
 onInputChange(event: any): void {
   this.filterOptions();
@@ -397,9 +427,11 @@ filterOptions(): void {
   }
 }
 
-onOptionSelected(option: string): void {
+onOptionSelected(option: any): void {
   // Handle the selected option
   this.phoneNumber=option
+  this.name=this.customerData[option]
+
   this.filteredOptions = [];
   console.log('Selected option:', option);
 }

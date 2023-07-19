@@ -86,8 +86,8 @@
         <th mat-header-cell *matHeaderCellDef>action</th>
         <td mat-cell *matCellDef="let product">
           <ion-button mat-icon-button (click)="settle(product.date)">Settle</ion-button>
-          <ion-button mat-icon-button (click)="checkBluetoothPermissions()">View</ion-button>
-          <ion-button mat-icon-button (click)="listBluetoothDevices()">Printa</ion-button>
+          <ion-button mat-icon-button (click)="viewDaySale(product.date)">View</ion-button>
+          <ion-button mat-icon-button (click)="printThroughWebApiServices(product.date)">Print</ion-button>
         </td>
       </ng-container>
 
@@ -96,7 +96,7 @@
     </table>
   </div>
 </ion-content>
-<div *ngIf = "bluetoothList.length>0">
+<!-- <div *ngIf = "bluetoothList.length>0">
 <ion-list>
   <ion-item *ngFor="let item of bluetoothList" (click)="selectPrinter(item.id)">
       {{item.name}} {{item.id}}
@@ -108,4 +108,4 @@
   <ion-button expand="full" color="danger" *ngIf='selectedPrinter' (click)="connectAndPrint()">
   PRINT!
   </ion-button>
-</div>
+</div> -->
