@@ -11,13 +11,29 @@ import { NavController } from '@ionic/angular';
 export class LandingPage implements OnInit {
   today = new Date();
   dateString = this.today.toJSON().slice(0, 10);
-  date :string
+  removeDate :string
+ 
   constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage){    
     console.log('alhasdaskf;lhnkldsafj')
-    this.date =  this.getDate(7)
+    this.removeDate=''
+    
+    this.nativeStorage.getItem('backup_days').then(data=>{
+      this.removeDate =  this.getDate(data)
+      
+    }).catch(data=>{
+      this.nativeStorage.setItem("backup_days",7)
+         this.nativeStorage.setItem("shopName",'')
+         this.nativeStorage.setItem('contactNumber','0000000000')
+
+         
+    })
+
+
+
     setTimeout(()=>    {   
-      console.log('datetodelete',this.date)
-      this.nativeStorage.remove(this.date) 
+      console.log('datetodelete',this.removeDate)
+      this.nativeStorage.remove(this.removeDate) 
+
       this.nativeStorage.getItem('backupdate').then(data=>{
       console.log('backupdate======================',data)
       if (this.dateString != data){

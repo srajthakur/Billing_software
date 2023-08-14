@@ -41,10 +41,15 @@
         <ion-label position="stacked">Contact Number</ion-label>
         <ion-input [(ngModel)]="contactNumber" type="tel"></ion-input>
       </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Keep Data of Days</ion-label>
+        <ion-input [(ngModel)]="backupDays" type="tel"></ion-input>
+      </ion-item>
     </ion-list>
+    <ion-button expand="full" (click)="saveData()">Save</ion-button>
     <ion-row>
       <ion-col size="12">
-        <h6 class="h6-heading">Products Upload &nbsp;
+        <h6 class="h6-heading">Customer Upload &nbsp;
           
         </h6>
       </ion-col>
@@ -53,7 +58,7 @@
          type="file" accept=".xlsx" (change)="fileupload($event)"></ion-input>
       </ion-col>
       <ion-col size-sm="2" size="4">
-        <ion-button type="submit" (click)="importData()">Upload
+        <ion-button type="submit" (click)="importData()">Customer Upload
           <ion-icon slot="end" name="cloud-upload"></ion-icon>
         </ion-button>
       </ion-col>
@@ -74,6 +79,6 @@
     </ion-row>
   
     <ion-button expand="full" type= 'file' (click)="downloadBackupFile()">Create Backup</ion-button>
-    <ion-button expand="full" (click)="exportData()">Export</ion-button>
+    
   </ion-content>
   

@@ -4,6 +4,7 @@ import json
 PORT = 8001
 
 class MyRequestHandler(BaseHTTPRequestHandler):
+
     def do_GET(self):
         # ... Code to handle GET requests ...
         pass
@@ -29,6 +30,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             data = json.loads(post_data.decode('utf-8'))
 
             # Your logic to process the data and generate a response
+            print(data)
             response_data = {'message': 'Received data:', 'data': data}
             self.wfile.write(json.dumps(response_data).encode())
         else:
@@ -50,3 +52,4 @@ if __name__ == "__main__":
     httpd = HTTPServer(server_address, MyRequestHandler)
     print(f"Serving at port {PORT}")
     httpd.serve_forever()
+

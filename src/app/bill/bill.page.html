@@ -35,13 +35,33 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="5"><ion-label class="custom-table" position="floating">Number</ion-label><ion-input id="phoneid" placeholder="" [(ngModel)]="phoneNumber" (ionChange)="onInputChange($event)" (keyup)="onInputChange($event)" ></ion-input>
+      <ion-col size="5"><ion-label class="custom-table" position="floating">Number</ion-label>
+        <!-- <ion-label class="custom-table" position="floating">Number</ion-label><ion-input id="phoneid" placeholder="" [(ngModel)]="phoneNumber" (ionChange)="onInputChange($event)" (keyup)="onInputChange($event)" > -->
+
+      <!-- </ion-input> -->
+        <!-- <ion-list *ngIf="filteredOptions.length > 0"> -->
+          <!-- <ion-item *ngFor="let option of filteredOptions" (click)="onOptionSelected(option)">
+            {{ option }}
+          </ion-item> -->
+
+        <!-- </ion-list>
         <ion-list *ngIf="filteredOptions.length > 0">
-          <ion-item *ngFor="let option of filteredOptions" (click)="onOptionSelected(option)">
+          <ion-item *ngFor="let option of filteredOptions; let i = index" [class.selected]="selectedIndex === i" (click)="onOptionSelected(option)">
+            {{ option }}
+          </ion-item>
+        </ion-list> -->
+
+          <ion-input id="phoneid" placeholder="" [(ngModel)]="phoneNumber" (ionInput)="onInputChanged()" (keydown.ArrowDown)="navigateOptions('down')" (keydown.ArrowUp)="navigateOptions('up')" (keydown.Enter)="selectOption()"></ion-input>
+      
+        
+        <ion-list *ngIf="filteredOptions.length > 0">
+          <ion-item *ngFor="let option of filteredOptions; let i = index" [class.selected]="selectedIndex === i" (click)="onOptionSelectedclick(option)">
             {{ option }}
           </ion-item>
         </ion-list>
+        
       </ion-col>
+      
       <ion-col size="5"><ion-label class="custom-table" position="floating">Name</ion-label>    <ion-input id="phoneid" placeholder="" [(ngModel)]="name"></ion-input></ion-col>
         <ion-col size="2">    <ion-label class="custom-table">Bill Number: {{ billNumber }}</ion-label></ion-col>
     </ion-row>
@@ -80,7 +100,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
       </ion-col>
-      <ion-col size="4"  *ngIf="!isAddButtonClicked && !isUpdateButtonClicked" (keydown)="onKeyDown($event)">
+      <ion-col size="4"  *ngIf="!isAddButtonClicked && !isUpdateButtonClicked" (keydown)="onKeyDown($event,0,'')">
         <ion-button expand="full" (click)="addItem()">Add</ion-button>
         <ion-button expand="full"  [disabled] = '(tableData.length == 0 && !stashed) || this.generateUpdateBill' (click)="stashBill(stashed ? 'unstash':'stash')">{{stashed ? 'un':''}}stash</ion-button>
         <ion-button expand="full"  [disabled] = "this.generateUpdateBill" (click)="updateItems()">Update</ion-button>
@@ -111,8 +131,8 @@
       </ion-col>
 
       <ion-col size="4"  *ngIf="isAddButtonClicked">
-        <ion-input id="phoneid" placeholder="Item Code" [(ngModel)]="itemcode" id="codeItem"></ion-input>
-        <ion-input id="phoneid" placeholder="Item Quandity" [(ngModel)]="itemquandity"></ion-input>
+        <ion-input id="phoneid" placeholder="Item Code" [(ngModel)]="itemcode" ></ion-input>
+        <!-- <ion-input id="phoneid" placeholder="Item Quandity" [(ngModel)]="itemquandity"></ion-input> -->
         <ion-button expand="full" (click)="addItem()">Add</ion-button>
         <ion-button expand="full" (click)="back()">back</ion-button>
         

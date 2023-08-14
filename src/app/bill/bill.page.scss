@@ -82,3 +82,40 @@ mat-option.highlighted {
   background-color: #f0f0f0;
   text-align: center;
 }
+/* Styling for the selected item in the list */
+.selected {
+  background-color: lightgray;
+}
+
+/* Styling for the dropdown list */
+ion-list {
+  max-height: 200px; /* Set a maximum height for the list to allow scrolling */
+  overflow-y: auto; /* Add vertical scrollbar if needed */
+  border: 1px solid #ccc; /* Add a border for visual separation */
+  border-radius: 5px;
+  
+}
+
+/* Styling for the individual items in the dropdown list */
+ion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+ion-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Styling for the input field */
+ion-input {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+/* Styling for the selected option in the select component */
+ion-select-option:checked {
+  background-color: lightgray;
+}

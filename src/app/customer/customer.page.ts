@@ -35,6 +35,7 @@ export class CustomerPage  {
     this.nativeStorage.getItem('customer')
       .then(data => {
         console.log(data)
+        this.tableData=[]
         for (const key in data) {
           console.log(key); // 'key1', 'key2'
           this.tableData.push({'number':key,"name":data[key]}) 

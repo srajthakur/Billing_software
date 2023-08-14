@@ -4,7 +4,10 @@ import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { File } from '@ionic-native/file/ngx';
 import * as XLSX from 'xlsx';
-type customer = Record<string, string>;
+
+interface customer {
+  [key: string]: string;
+}
 @Component({
   selector: 'app-setting',
   templateUrl: 'setting.page.html',
@@ -13,10 +16,21 @@ type customer = Record<string, string>;
 export class SettingPage {
   shopName: string;
   contactNumber: string;
+  backupDays:number;
    importFile: any;
   constructor(private navCtrl: NavController,private nativeStorage:NativeStorage,private fileChooser: FileChooser, private file: File) {
     this.shopName = '';
     this.contactNumber = '';
+    this.backupDays=0
+          this.nativeStorage.getItem("backup_days").then(data=>{
+              this.backupDays=data
+          })
+         this.nativeStorage.getItem("shopName").then(data=>{
+              this.shopName=data            
+          })
+         this.nativeStorage.getItem('contactNumber').then(data=>{
+            this.contactNumber=data
+         })
   }
 
   navFun(data:string){
@@ -41,59 +55,7 @@ export class SettingPage {
       this.navCtrl.navigateForward('/landing')
     }
   }
-  // importData() {
-  //   this.fileChooser.open()
-  //     .then(fileURI => {
-  //       // Use the selected fileURI to resolve the local filesystem URL
-  //       this.file.resolveLocalFilesystemUrl(fileURI)
-  //         .then(fileEntry => {
-  //           if (fileEntry.isFile) {
-  //             const fileURL = fileEntry.toURL();
-  //             this.file.readAsArrayBuffer(this.file.tempDirectory, fileURL.substr(fileURL.lastIndexOf('/') + 1))
-  //               .then((arrayBuffer) => {
-  //                 const data = new Uint8Array(arrayBuffer);
-  //                 const workbook = XLSX.read(data, { type: 'array' });
-  //                 const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-  //                 const importedData: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-  
-  //                 // Extract number and name columns from imported data
-  //                 const importedNumbers = importedData.map(row => row[0]);
-  //                 const importedNames = importedData.map(row => row[1]);
-  
-  //                 // Get existing customer data from native storage
-  //                 this.nativeStorage.getItem('customer')
-  //                   .then(existingData => {
-  //                     // Merge existing data with imported data
-  //                     const mergedData = { ...existingData, ...this.createcustomer(importedNumbers, importedNames) };
-  
-  //                     // Save merged data in native storage
-  //                     this.nativeStorage.setItem('customer', mergedData)
-  //                       .then(() => {
-  //                         console.log('Import successful! Data merged and saved in native storage:', mergedData);
-  //                       })
-  //                       .catch(err => {
-  //                         console.error('Error saving data in native storage:', err);
-  //                       });
-  //                   })
-  //                   .catch(error => {
-  //                     console.error('Error retrieving existing customer data:', error);
-  //                   });
-  //               })
-  //               .catch(err => {
-  //                 console.error('Error reading file:', err);
-  //               });
-  //           } else {
-  //             console.error('Invalid file entry:', fileEntry);
-  //           }
-  //         })
-  //         .catch(err => {
-  //           console.error('Error resolving file:', err);
-  //         });
-  //     })
-  //     .catch(err => {
-  //       console.error('Error selecting file:', err);
-  //     });
-  // }
+ 
 
   
   fileupload($event: any){
@@ -102,110 +64,74 @@ export class SettingPage {
   }
 
 
-  importData() {
-    console.log(this.importFile)
+  async importData() {
+    console.log(this.importFile);
     const file = this.importFile; // Get the selected file from the input event
     const fileReader = new FileReader();
-
-    fileReader.onload = (e) => {
+  
+    fileReader.onload = async (e) => { // Mark the callback function as async
       const arrayBuffer = fileReader.result as ArrayBuffer;
       const data = new Uint8Array(arrayBuffer);
       const workbook = XLSX.read(data, { type: 'array' });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const importedData: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
+  
       if (importedData && importedData.length > 0) {
-        // Extract number and name columns from imported data
         const importedNames = importedData.map(row => row[0]);
         const importedNumbers = importedData.map(row => row[1]);
-      // Get existing customer data from native storage
-      this.nativeStorage.getItem('customer')
-      .then(existingData => {
-        // Merge existing data with imported data
-        const mergedData = { ...existingData, ...this.createcustomer(importedNumbers, importedNames) };
-
-        // Save merged data in native storage
-        this.nativeStorage.setItem('customer', mergedData)
-          .then(() => {
-            console.log('Import successful! Data merged and saved in native storage:', mergedData);
-          })
-          .catch(err => {
-            console.error('Error saving data in native storage:', err);
-          });
-      })
-      .catch(error => {
-        console.error('Error retrieving existing customer data:', error);
-      });
-        
-
+  
+        try {
+          const existingData = await this.nativeStorage.getItem('customer');
+  
+          // Create customer data
+          const mergedData = await this.createcustomer(importedNumbers, importedNames);
+  
+          // Merge existing data with imported data
+          Object.assign(existingData, mergedData);
+  
+          // Save merged data in native storage
+          await this.nativeStorage.setItem('customer', existingData);
+  
+          console.log('Import successful! Data merged and saved in native storage:', existingData);
+        } catch (error) {
+          console.error('Error handling data:', error);
+        }
+  
         console.log('Imported Numbers:', importedNumbers);
         console.log('Imported Names:', importedNames);
       } else {
         console.error('No data found in the imported file.');
       }
     };
-
+  
     fileReader.readAsArrayBuffer(file);
   }
-//   importData() {
-//     const filePath = this.file.applicationDirectory + 'cutomer.xlsx'; // Update with the actual file path
-
-//     const reader = new FileReader();
-
-//     reader.onloadend = () => {
-//       const data = new Uint8Array(reader.result as ArrayBuffer);
-//       const workbook = XLSX.read(data, { type: 'array' });
-//       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-//       const importedData: any[][] = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-//       // Extract number and name columns from imported data
-//       const importedNumbers = importedData.map(row => row[0]);
-//       const importedNames = importedData.map(row => row[1]);
-
-//       // Get existing customer data from native storage
-//       this.nativeStorage.getItem('customer')
-//         .then(existingData => {
-//           // Merge existing data with imported data
-//           const mergedData = { ...existingData, ...this.createcustomer(importedNumbers, importedNames) };
-
-//           // Save merged data in native storage
-//           this.nativeStorage.setItem('customer', mergedData)
-//             .then(() => {
-//               console.log('Import successful! Data merged and saved in native storage:', mergedData);
-//             })
-//             .catch(err => {
-//               console.error('Error saving data in native storage:', err);
-//             });
-//         })
-//         .catch(error => {
-//           console.error('Error retrieving existing customer data:', error);
-//         });
-//     };
-
-//     reader.onerror = (err) => {
-//       console.error('Error reading file:', err);
-//     };
-
-//     // this.file.readAsArrayBuffer(filePath)
-//     //   .then((arrayBuffer) => {
-//     //     reader.readAsArrayBuffer(arrayBuffer);
-//     //   })
-//     //   .catch(err => {
-//     //     console.error('Error reading file:', err);
-//     //   });
-//  }
-   createcustomer(numbers: any[], names: any[]): any {
-    const customer :customer = {};
   
-    for (let i = 0; i < numbers.length; i++) {
-      if (numbers[i] != undefined && names[i]!=undefined && numbers[i].length>9){
-        customer[numbers[i]] = names[i];
-      }
-      }
+
+ async createcustomer(numbers: any[], names: any[]): Promise<any> {
+  const customer: customer = {};
+  console.log('in creating customer ');
+  console.log(numbers);
+  console.log('===================================================');
+  
+  for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i]!=undefined){
+      numbers[i] = numbers[i].toString()
+    }
+   
+    if (numbers[i] !== undefined && names[i] !== undefined && numbers[i].length > 9) {
+      customer[numbers[i]] = names[i];
+      console.log(numbers[i], ' : ', names[i]);
+    }
+    else if (numbers[i] !== undefined){
+      console.log(i,numbers[i],':',names[i],numbers[i].length,typeof numbers[i]);
+    }
      
-  
-    return customer;
   }
+
+  console.log('outside loop');
+  return customer;
+}
   exportData() {
     this.nativeStorage.getItem('customer')
       .then(customer => {
@@ -323,6 +249,12 @@ export class SettingPage {
 
       reader.readAsText(file);
     }
+  }
+  saveData(){
+         this.nativeStorage.setItem("backup_days",this.backupDays)
+         this.nativeStorage.setItem("shopName",this.shopName)
+         this.nativeStorage.setItem('contactNumber',this.contactNumber)
+
   }
 
   

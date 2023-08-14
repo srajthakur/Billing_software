@@ -1,10 +1,11 @@
-import { Component, ViewChild,ElementRef,OnInit,Renderer2,AfterViewInit ,HostListener} from '@angular/core';
+import { Component, ViewChild,ElementRef,OnInit,Renderer2,AfterViewInit ,HostListener,ChangeDetectorRef} from '@angular/core';
 import { MatTableDataSource , MatTableModule} from '@angular/material/table';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { MatIconModule } from '@angular/material/icon';
 import { GoogleDriveService } from '../services/drive.service';
+import { ApiService } from '../services/api.service';
 
 interface MyObject {
   itemCode:string, 
@@ -48,16 +49,24 @@ export class BillPage implements OnInit {
   options: string[] =[]
   customerData:any
   filteredOptions: string[] 
+  selectedIndex: any
+  selectedOption: string | null = null;
+ 
+  searchQuery: string = '';
+  contactNumbers: string[] = ['7012345678', '7023456789', '7134567890','9897174115'];
+
 
 
   
 
   constructor(
+    private apiService: ApiService,
     private navCtrl:NavController ,
     private nativeStorage:NativeStorage,
     private AlertController:AlertController,
     private renderer: Renderer2,
     private googleDriveService: GoogleDriveService,
+    private cdr: ChangeDetectorRef,
     private elementRef:ElementRef) { 
 
     this.today = new Date();
@@ -73,7 +82,8 @@ export class BillPage implements OnInit {
     this.isAddButtonClicked =false;
     this.isUpdateButtonClicked=false;
     this.itemcode='';
-    this.itemquandity='';
+    this.itemquandity='1';
+    this.selectedIndex = -1;
     this.todayDateInStorage()
     this.nativeStorage.getItem(this.dateString).then(data=>{
     console.log(data)
@@ -103,7 +113,7 @@ export class BillPage implements OnInit {
   }
 
   @HostListener('window:keydown', ['$event'])
-  onKeyDown(event: KeyboardEvent) {
+  onKeyDown(event: KeyboardEvent,index:number,option:string) {
     // Check if the key pressed is "F1"
     if (event.key === 'F1') {
       // Prevent the default browser behavior for the F1 key press
@@ -116,6 +126,17 @@ export class BillPage implements OnInit {
       event.preventDefault(); // Prevent the default browser behavior for ESC key press
       this.generateBill();
     }
+    else if (this.filteredOptions.length>0 && event.key === 'ArrowDown') {
+      console.log('generate.button')
+      event.preventDefault(); // Prevent the default browser behavior for ESC key press
+      // this.navigateOptions('down');
+    }
+    else if (this.filteredOptions.length>0 && event.key === 'Enter') {
+      console.log('generate.button')
+      event.preventDefault(); // Prevent the default browser behavior for ESC key press
+      this.onEnterKey(option)
+    }
+    
   }
 
   focusNameField() {
@@ -179,7 +200,7 @@ export class BillPage implements OnInit {
       this.tableData.push( { itemCode: this.itemcode, itemName: 'Manual', price: this.itemcode, quantity: this.itemquandity,totalPrice:parseInt(this.itemquandity)*parseInt(this.itemcode)  })
       this.dataSource = new MatTableDataSource(this.tableData)
       this.itemcode='';
-      this.itemquandity='';
+      this.itemquandity='1';
       this.total_fun()
     }
     else {
@@ -189,7 +210,7 @@ export class BillPage implements OnInit {
         this.tableData.push( { itemCode: this.itemcode, itemName: 'Manual', price: inprice, quantity: this.itemquandity,totalPrice:parseInt(this.itemquandity)*parseInt(inprice)  })
         this.dataSource = new MatTableDataSource(this.tableData)
         this.itemcode='';
-        this.itemquandity='';
+        this.itemquandity='1';
         this.total_fun()
         break
        }
@@ -259,7 +280,7 @@ export class BillPage implements OnInit {
     this.paymentMethod = '';
     this.isAddButtonClicked =false;
     this.itemcode='';
-    this.itemquandity='';
+    this.itemquandity='1';
     this.nativeStorage.getItem(this.dateString).then(data=>{
     this.billNumber = data.length
     this.generateUpdateBill = false
@@ -448,13 +469,28 @@ filterOptions(): void {
   }
 }
 
-onOptionSelected(option: any): void {
-  // Handle the selected option
-  this.phoneNumber=option
-  this.name=this.customerData[option]
 
-  this.filteredOptions = [];
-  console.log('Selected option:', option);
+
+onArrowDown( index: any) {
+  console.log('dslkhgfsdkljlkfs;fk')
+  console.log(index)
+  if (index < this.filteredOptions.length - 1) {
+    this.selectedIndex = index + 1; // Move selection down
+  }
+}
+inlist(option:any){
+  console.log('called')
+  if(option == '7302939977'){
+    console.log('true called 7302939977')
+    return true
+  }
+  return false
+}
+onEnterKey(option: string) {
+
+  if (this.selectedIndex >= 0) {
+    this.onOptionSelected(option); // Select the option
+  }
 }
 
 
@@ -474,6 +510,79 @@ async saveData(): Promise<void> {
   await this.googleDriveService.saveDataToDrive(data);
   console.log('Data saved to Google Drive!');
 }
+
+
+  onSelectFocus() {
+    this.filteredOptions = [];
+  }
+
+  onSelectChange() {
+    this.searchQuery = this.selectedOption || '';
+    this.filteredOptions = [];
+  }
+
+  // navigateOptions(direction: string) {
+  //   if (this.filteredOptions.length === 0) {
+  //     return;
+  //   }
+
+  //   if (direction === 'down') {
+  //     this.selectedIndex = Math.min(this.selectedIndex + 1, this.filteredOptions.length - 1);
+  //   } else if (direction === 'up') {
+  //     this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
+  //   }
+  // }
+
+  // selectOption() {
+  //   if (this.selectedIndex >= 0 && this.selectedIndex < this.filteredOptions.length) {
+  //     this.onOptionSelected(this.filteredOptions[this.selectedIndex]);
+  //   }
+  // }
+
+  onInputChanged() {
+
+    this.filterOptions()
+    this.selectedIndex = -1;
+  }
+  navigateOptions(direction: string) {
+    console.log('navigateoption',direction)
+    if (this.filteredOptions.length === 0) {
+      return;
+    }
+
+    if (direction === 'down') {
+      this.selectedIndex = Math.min(this.selectedIndex + 1, this.filteredOptions.length - 1);
+    } else if (direction === 'up') {
+      this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
+    }
+    console.log('selected index',this.selectedIndex)
+    this.cdr.detectChanges(); 
+  }
+
+  selectOption() {
+    if (this.selectedIndex >= 0 && this.selectedIndex < this.filteredOptions.length) {
+       this.onOptionSelected('')
+    }
+  }
+
+  onOptionSelected(option: string) {
+    
+    this.phoneNumber=this.filteredOptions[this.selectedIndex]
+    this.name=this.customerData[this.phoneNumber]
+    console.log('on keyyyyyyyyyyyy',this.phoneNumber,this.name)
+    this.filteredOptions = [];
+    this.selectedIndex = -1;
+  }
+  
+  onOptionSelectedclick(option: any): void {
+    // Handle the selected option
+    this.phoneNumber=option
+    this.name=this.customerData[option]
+    console.log('on clakd',this.phoneNumber,this.name)
+    this.filteredOptions = [];
+    console.log('Selected option:', option);
+  }
+
 }
 
 

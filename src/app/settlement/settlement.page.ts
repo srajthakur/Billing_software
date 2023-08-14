@@ -169,7 +169,9 @@ export class SettlementPage {
 
   settle(date:any) {
     
-  
+  this.nativeStorage.remove(date)
+  this.getData()
+
   }
   printThroughWebApiServices(date:any){
     console.log(date)
