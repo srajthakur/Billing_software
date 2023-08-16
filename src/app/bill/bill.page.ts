@@ -6,6 +6,8 @@ import { AlertController } from '@ionic/angular';
 import { MatIconModule } from '@angular/material/icon';
 import { GoogleDriveService } from '../services/drive.service';
 import { ApiService } from '../services/api.service';
+import { fromEvent } from 'rxjs';
+import { buffer, debounceTime, map,filter } from 'rxjs/operators';
 
 interface MyObject {
   itemCode:string, 
@@ -23,9 +25,10 @@ interface MyObject {
 
 export class BillPage implements OnInit {
   @ViewChild('codeItem', { static: true }) myInputRef!: ElementRef<HTMLInputElement>;
-
+  
   phoneNumber: string;
   name: any;
+  barcode:string
   billNumber: number=0;
   items: any[]; // Replace with your actual data structure
   dataSource: MatTableDataSource<any>;
@@ -51,6 +54,8 @@ export class BillPage implements OnInit {
   filteredOptions: string[] 
   selectedIndex: any
   selectedOption: string | null = null;
+  inputDisable:boolean
+  isBill:boolean
  
   searchQuery: string = '';
   contactNumbers: string[] = ['7012345678', '7023456789', '7134567890','9897174115'];
@@ -68,7 +73,11 @@ export class BillPage implements OnInit {
     private googleDriveService: GoogleDriveService,
     private cdr: ChangeDetectorRef,
     private elementRef:ElementRef) { 
+    
 
+    this.inputDisable=false
+    this.isBill=false
+    this.barcode =''
     this.today = new Date();
     this.dateString = this.today.toJSON().slice(0, 10); 
     this.phoneNumber = '';
@@ -112,7 +121,7 @@ export class BillPage implements OnInit {
     this.filteredOptions= [];
   }
 
-  @HostListener('window:keydown', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent,index:number,option:string) {
     // Check if the key pressed is "F1"
     if (event.key === 'F1') {
@@ -135,8 +144,41 @@ export class BillPage implements OnInit {
       console.log('generate.button')
       event.preventDefault(); // Prevent the default browser behavior for ESC key press
       this.onEnterKey(option)
+
+    }
+    else if (this.isAddButtonClicked ==false && this.inputDisable == true && event.key >= '0' && event.key <= '9'  ) {
+      console.log('generate called')
+      event.preventDefault();
+      this.barcode += event.key  // Prevent the default browser behavior for ESC key press
+      console.log(this.barcode)
+      if (this.barcode.length == 13){
+        console.log(this.barcode,'innnnnnnnnnnnnnnn')
+        this.barcode_reader()
+
+      }
+      setTimeout(() => {
+        console.log("Delayed function executed");
+        this.barcode=''
+      }, 1000);  
+    }
+    else if(this.isAddButtonClicked == false && this.inputDisable == false && this.isBill == false && this.phoneNumber && this.name && event.key == 'Enter'){
+      this.isBill = true
+      this.inputDisable = true
+    }
+    else if (this.itemcode && this.isAddButtonClicked == true && event.key == 'Enter'){
+      this.addItem()
     }
     
+  }
+  
+  barcode_reader( ){
+    if(this.inputDisable == true && this.isBill == true && this.barcode.length == 13 && this.isAddButtonClicked==false){
+      console.log('in br',this.barcode)
+      this.isAddButtonClicked =!this.isAddButtonClicked;
+      this.itemcode=this.barcode
+      this.barcode=''
+      this.addItem();
+    }
   }
 
   focusNameField() {
@@ -187,7 +229,7 @@ export class BillPage implements OnInit {
     if (this.myInputRef) {
       this.myInputRef.nativeElement.focus();
     }
-    
+    console.log('in additem',this.addItem)
     this.isAddButtonClicked =!this.isAddButtonClicked;
     if (parseInt(this.itemcode)<=10000 && this.isAddButtonClicked==false){
       for(let i=0;i<this.tableData.length;i++){
@@ -204,6 +246,7 @@ export class BillPage implements OnInit {
       this.total_fun()
     }
     else {
+      console.log('in additem else',this.addItem)
       for(let i=0;i<this.rate.length;i++){
        if(this.rate[i].productCode == this.itemcode){
         let inprice = this.rate[i].productPrice
@@ -285,6 +328,8 @@ export class BillPage implements OnInit {
     this.billNumber = data.length
     this.generateUpdateBill = false
     this.updateBillNumber = 0
+    this.inputDisable = false
+    this.isBill=false
     
     })
 
@@ -347,7 +392,17 @@ export class BillPage implements OnInit {
       }
       data[data.length]=indata  
       console.log(data)
-      this.nativeStorage.setItem(this.dateString,data)
+      this.nativeStorage.setItem(this.dateString,data).then(()=>{
+        this.apiService.printBill(indata).subscribe(
+          (response) => {
+            // Handle the response from the server after printing the settlement
+            console.log('Printing response:', response);
+          },
+          (error) => {
+            console.error('Error printing settlement:', error);
+          }
+        );
+      })
       
       this.clearItems()
     }).catch(data=>{
@@ -368,7 +423,17 @@ export class BillPage implements OnInit {
       }
       data[this.updateBillNumber]=indata
       console.log(data)
-      this.nativeStorage.setItem(this.dateString,data)
+      this.nativeStorage.setItem(this.dateString,data).then(()=>{
+        this.apiService.printBill(indata).subscribe(
+          (response) => {
+            // Handle the response from the server after printing the settlement
+            console.log('Printing response:', response);
+          },
+          (error) => {
+            console.error('Error printing settlement:', error);
+          }
+        );
+      })
       
       this.clearItems()
     })}
@@ -572,6 +637,8 @@ async saveData(): Promise<void> {
     console.log('on keyyyyyyyyyyyy',this.phoneNumber,this.name)
     this.filteredOptions = [];
     this.selectedIndex = -1;
+    this.inputDisable = true
+    this.isBill =true
   }
   
   onOptionSelectedclick(option: any): void {
