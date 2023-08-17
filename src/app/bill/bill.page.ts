@@ -37,7 +37,7 @@ export class BillPage implements OnInit {
   totalQuantity: number;
   totalAmount: number;
   paymentMethod: string;
-  isAddButtonClicked: boolean;
+  isEditButtonClicked:boolean;
   isUpdateButtonClicked:boolean;
   itemcode:string;
   itemquandity:string;
@@ -84,11 +84,11 @@ export class BillPage implements OnInit {
     this.name = '';
     this.items = []; // Initialize with your data
     this.dataSource = new MatTableDataSource(this.tableData);
+    this.isEditButtonClicked=false
     this.totalItems = 0;
     this.totalQuantity = 0;
     this.totalAmount = 0;
     this.paymentMethod = '';
-    this.isAddButtonClicked =false;
     this.isUpdateButtonClicked=false;
     this.itemcode='';
     this.itemquandity='1';
@@ -146,35 +146,48 @@ export class BillPage implements OnInit {
       this.onEnterKey(option)
 
     }
-    else if (this.isAddButtonClicked ==false && this.inputDisable == true && event.key >= '0' && event.key <= '9'  ) {
+    else if (!this.isUpdateButtonClicked && !this.isEditButtonClicked && this.inputDisable == true && ((event.key >= '0' && event.key <= '9') ||event.key=='Backspace')  ) {
       console.log('generate called')
       event.preventDefault();
-      this.barcode += event.key  // Prevent the default browser behavior for ESC key press
+      if (event.key=='Backspace'){
+        this.barcode=this.barcode.slice(0,-1)
+        this.itemcode=this.barcode
+      }
+else{      this.barcode += event.key  // Prevent the default browser behavior for ESC key press
       console.log(this.barcode)
       if (this.barcode.length == 13){
         console.log(this.barcode,'innnnnnnnnnnnnnnn')
         this.barcode_reader()
 
       }
-      setTimeout(() => {
-        console.log("Delayed function executed");
-        this.barcode=''
-      }, 1000);  
+      this.itemcode=this.barcode}
+      // setTimeout(() => {
+      //   console.log("Delayed function executed");
+      //   this.barcode=''
+      // }, 1000);  
     }
-    else if(this.isAddButtonClicked == false && this.inputDisable == false && this.isBill == false && this.phoneNumber && this.name && event.key == 'Enter'){
+    else if(this.inputDisable == false && this.isBill == false  && this.name && event.key == 'Enter' && this.checkPhoneNumber(this.phoneNumber)){
       this.isBill = true
       this.inputDisable = true
     }
-    else if (this.itemcode && this.isAddButtonClicked == true && event.key == 'Enter'){
+    else if (!this.isEditButtonClicked && this.itemcode && this.inputDisable == true && event.key == 'Enter'){
       this.addItem()
     }
     
   }
+  checkPhoneNumber(number:any){
+    
+    if(number.length==10 || number.length == 13){
+      return true
+    }
+    this.showAlert('Number should be of 10 digit or for USA customer it should be of 13 digit.')
+    return false
+  }
   
   barcode_reader( ){
-    if(this.inputDisable == true && this.isBill == true && this.barcode.length == 13 && this.isAddButtonClicked==false){
+    if(this.inputDisable == true && this.isBill == true && this.barcode.length == 13){
       console.log('in br',this.barcode)
-      this.isAddButtonClicked =!this.isAddButtonClicked;
+
       this.itemcode=this.barcode
       this.barcode=''
       this.addItem();
@@ -216,6 +229,7 @@ export class BillPage implements OnInit {
       buttons: ['OK']
     });  await alert.present();
   }
+
   changeQuantity(item: any) {
     // Logic to change quantity for the selected item
 
@@ -226,12 +240,13 @@ export class BillPage implements OnInit {
 
  async addItem() {
     // Logic to add an item to the list
+    this.barcode=''
     if (this.myInputRef) {
       this.myInputRef.nativeElement.focus();
     }
     console.log('in additem',this.addItem)
-    this.isAddButtonClicked =!this.isAddButtonClicked;
-    if (parseInt(this.itemcode)<=10000 && this.isAddButtonClicked==false){
+ 
+    if (parseInt(this.itemcode)<=10000){
       for(let i=0;i<this.tableData.length;i++){
         if (this.tableData[i].itemCode == this.itemcode){
                 this.itemquandity = (parseInt( this.itemquandity)+ parseInt( this.tableData[i].quantity)).toString()
@@ -321,7 +336,6 @@ export class BillPage implements OnInit {
     this.totalQuantity = 0;
     this.totalAmount = 0;
     this.paymentMethod = '';
-    this.isAddButtonClicked =false;
     this.itemcode='';
     this.itemquandity='1';
     this.nativeStorage.getItem(this.dateString).then(data=>{
@@ -330,6 +344,7 @@ export class BillPage implements OnInit {
     this.updateBillNumber = 0
     this.inputDisable = false
     this.isBill=false
+    this.isEditButtonClicked=false
     
     })
 
@@ -493,7 +508,6 @@ export class BillPage implements OnInit {
     })
   }
 back(){
-  this.isAddButtonClicked=false
   this.isUpdateButtonClicked=false
 }
 navFun(data:string){
@@ -516,6 +530,10 @@ navFun(data:string){
     this.nativeStorage.setItem('logStatus','Logout')
     console.log(this.nativeStorage.getItem('logStatus'))
     this.navCtrl.navigateForward('')
+  }
+  else if (data == 'U&U'){
+    this.isBill = true
+    this.inputDisable = true
   }
 }
 
@@ -632,22 +650,31 @@ async saveData(): Promise<void> {
 
   onOptionSelected(option: string) {
     
+  if(this.checkPhoneNumber(this.filteredOptions[this.selectedIndex])){
     this.phoneNumber=this.filteredOptions[this.selectedIndex]
     this.name=this.customerData[this.phoneNumber]
-    console.log('on keyyyyyyyyyyyy',this.phoneNumber,this.name)
+
     this.filteredOptions = [];
     this.selectedIndex = -1;
     this.inputDisable = true
     this.isBill =true
   }
+
+  }
   
   onOptionSelectedclick(option: any): void {
     // Handle the selected option
+    if(this.checkPhoneNumber(this.options)){
     this.phoneNumber=option
     this.name=this.customerData[option]
-    console.log('on clakd',this.phoneNumber,this.name)
     this.filteredOptions = [];
-    console.log('Selected option:', option);
+    this.selectedIndex = -1;
+    this.inputDisable = true
+    this.isBill =true}
+    
+  }
+  EditButtonClicked(){
+    this.isEditButtonClicked=!this.isEditButtonClicked
   }
 
 }
