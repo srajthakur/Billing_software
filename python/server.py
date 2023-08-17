@@ -35,7 +35,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'application/json')
 
             self.send_header('Access-Control-Allow-Origin',
-                             'https://srajthakur-ideal-fortnight-r65rp5j6g44cw55w-8000.app.github.dev')
+                             'http://localhost:8000')
             self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
             self.send_header('Access-Control-Allow-Headers', 'Content-Type')
             self.end_headers()
@@ -118,7 +118,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'application/json')
 
             self.send_header('Access-Control-Allow-Origin',
-                             'https://srajthakur-ideal-fortnight-r65rp5j6g44cw55w-8000.app.github.dev')
+                             'http://localhost:8000')
             self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
             self.send_header('Access-Control-Allow-Headers', 'Content-Type')
             self.end_headers()
@@ -134,8 +134,11 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             # Your logic to process the data and generate a response
             print('api connected')
             print(data)
+            da=date.today()
             doc = ['.','        BOMBAY FASHION',"  ",'  9010751751     9550926301']
-            doc.append('Bill No      '    +data['billnumber'] + "       " + str(da))
+            doc.append('Bill No      '    +str(data['billNumber']) + "       " + str(da))
+            doc.append('-------------------------------------')
+            doc.append(data['number'] +'          '+data['name'])
             doc.append('-------------------------------------')
             doc.append('Price         quantity       Total')
             f = 50
@@ -143,27 +146,26 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             t=0
             q=0
 
+            tabledata = data['tabledata']
             
-            while(i<len(prices)):
-            k=str(prices[i])  
-            #s=str(Codes[i])+"          "+str(totals[i])
-            # al=len(k)
-            # while(al<13):
-            #   k='0'+k
-            #   al=al+1
+            for datain in tabledata:
+                k=datain['price']  
+                #s=str(Codes[i])+"          "+str(totals[i])
+                # al=len(k)
+                # while(al<13):
+                #   k='0'+k
+                #   al=al+1
 
-            if len(k)==4:
-                s=  k+"           "+str(quanditys[i])+"                "+str(totals[i])
-            elif len(k) ==3 :
-                s= k+"              "+str(quanditys[i])+"                "+str(totals[i])
-            elif len(k) ==2 :
-                s=k+"                "+str(quanditys[i])+"                "+str(totals[i])
+                if len(k)==4:
+                    s=  k+"           "+datain['quantity']+"                "+str(datain['totalPrice'])
+                elif len(k) ==3 :
+                    s= k+"              "+datain['quantity']+"                "+str(datain['totalPrice'])
+                elif len(k) ==2 :
+                    s=k+"                "+datain['quantity']+"                "+str(datain['totalPrice'])
+                
+                doc.append(s)
+                
             
-            doc.append(s)
-            
-            t=t+totals[i]
-            q=q+quanditys[i]
-            i=i+1
             print('------------------------------------------------------------------------------------------------------------')
             for i in doc:
                 print(i)
@@ -178,9 +180,9 @@ class MyRequestHandler(BaseHTTPRequestHandler):
                 dc.TextOut(0,i*50, text)
                 dc.MoveTo(0, i*f)
             dc.TextOut(0,(i+1)*f, '-------------------------------------')
-            dc.TextOut(0,(i+2)*f, '   ' +'TOTAL Item'+ '            ' + str(q) )
+            dc.TextOut(0,(i+2)*f, '   ' +'TOTAL Item'+ '            ' + str(data['totalQuantity']) )
             dc.TextOut(0,(i+3)*f, '-------------------------------------')
-            dc.TextOut(0,(i+4)*f, '     ' +'TOTAL'+ '               ' + str(t)+ ' RS' )
+            dc.TextOut(0,(i+4)*f, '     ' +'TOTAL'+ '               ' + str(data['totalAmount'])+ ' RS' )
             dc.TextOut(0,(i+5)*f, '-------------------------------------')
             #add_img(dc,'bill/data/INSTA.png')
             dc.TextOut(0,(i+6)*f, '-------------------------------------')
@@ -209,7 +211,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         print("inoption")
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin',
-                         'https://srajthakur-ideal-fortnight-r65rp5j6g44cw55w-8000.app.github.dev')
+                         'http://localhost:8000')
         self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
