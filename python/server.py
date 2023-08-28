@@ -51,6 +51,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             # Your logic to process the data and generate a response
             print('api connected')
             print(data)
+            print('=======================================================')
             doc = []
             doc.append("Bill_NO  Mode   Amount ")
             bli = 0
@@ -59,6 +60,8 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             te = 0
             if len(data[0]) == 0:
               del data[0]
+            print(data)
+            print('=======================================================')
             for b in data:
                 print(b)
                 bls = "     "

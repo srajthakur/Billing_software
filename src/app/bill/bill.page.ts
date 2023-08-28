@@ -29,7 +29,7 @@ export class BillPage implements OnInit {
   phoneNumber: string;
   name: any;
   barcode:string
-  billNumber: number=0;
+  billNumber: number=1;
   items: any[]; // Replace with your actual data structure
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['itemCode', 'itemName', 'price', 'quantity', 'totalPrice','actions'];
@@ -96,7 +96,10 @@ export class BillPage implements OnInit {
     this.todayDateInStorage()
     this.nativeStorage.getItem(this.dateString).then(data=>{
     console.log(data)
-    this.billNumber = data.length
+    if(data.length){
+      this.billNumber = data.length
+    }
+    
     this.nativeStorage.getItem('rate').then(data=>{
       this.rate=data
     })
@@ -434,11 +437,14 @@ else{      this.barcode += event.key  // Prevent the default browser behavior fo
       'totalQuantity' : this.totalQuantity,
       'totalAmount'   : this.totalAmount,
       'totalItems'    : this.totalItems,
-      'paymentMethod' : this.paymentMethod
+      'paymentMethod' : this.paymentMethod,
+      'billNumber'    :this.updateBillNumber
       }
+
       data[this.updateBillNumber]=indata
       console.log(data)
       this.nativeStorage.setItem(this.dateString,data).then(()=>{
+        
         this.apiService.printBill(indata).subscribe(
           (response) => {
             // Handle the response from the server after printing the settlement
@@ -664,7 +670,7 @@ async saveData(): Promise<void> {
   
   onOptionSelectedclick(option: any): void {
     // Handle the selected option
-    if(this.checkPhoneNumber(this.options)){
+    if(this.checkPhoneNumber(option)){
     this.phoneNumber=option
     this.name=this.customerData[option]
     this.filteredOptions = [];
