@@ -11,22 +11,37 @@ import { NavController } from '@ionic/angular';
 export class LandingPage implements OnInit {
   today = new Date();
   dateString = this.today.toJSON().slice(0, 10);
-  removeDate :string
+  removeDate :string='00000'
+  backdata :number=7
  
   constructor(private navCtrl:NavController ,private nativeStorage:NativeStorage){    
     console.log('alhasdaskf;lhnkldsafj')
-    this.removeDate=''
     
-    this.nativeStorage.getItem('backup_days').then(data=>{
-      this.removeDate =  this.getDate(data)
-      
-    }).catch(data=>{
-      this.nativeStorage.setItem("backup_days",7)
-         this.nativeStorage.setItem("shopName",'')
-         this.nativeStorage.setItem('contactNumber','0000000000')
+    setTimeout(()=>{
+      this.nativeStorage.getItem('backup_days').then(data=>{
+        console.log('innnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
+        console.log(typeof data)
+        this.backdata = data
+        this.getDate(this.backdata)
+       console.log(this.removeDate,data)
+      }).catch(data=>{
+        this.nativeStorage.setItem("backup_days",7)
+           this.nativeStorage.setItem("shopName",'')
+           this.nativeStorage.setItem('contactNumber','0000000000')
+           console.log('outttttttttttttttttt')
+           
+      })
 
-         
-    })
+      this.nativeStorage.getItem('logStatus').then(data=>{
+        console.log('logining data' ,data)
+        if(data == 'Login')
+        {
+          this.navCtrl.navigateForward('/bill');
+        }
+      })
+
+    },5000)
+
 
 
 
@@ -46,17 +61,16 @@ export class LandingPage implements OnInit {
     }
      
     )
-    this.nativeStorage.getItem('logStatus').then(data=>{
-      console.log('logining data' ,data)
-      if(data == 'Login')
-      {
-        this.navCtrl.navigateForward('/bill');
-      }
+    this.nativeStorage.getItem('barcode').then(data=>{
+
+    }).catch(data=>{
+      this.nativeStorage.setItem('barcode',1234560000200)
     })
+
      
 
 
-  },5000)
+  },10000)
 
   }
 
@@ -168,12 +182,12 @@ export class LandingPage implements OnInit {
   }
    getDate(n: number) {
     const today = new Date();
-    console.log(today)
+    console.log(today,'in getdate')
     const date = new Date(today.getTime() - n * 24 * 60 * 60 * 1000);
   
     const dateString = date.toISOString().slice(0, 10);
     
-    return dateString;
+    this.removeDate = dateString;
   }
 }
 

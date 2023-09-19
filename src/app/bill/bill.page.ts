@@ -1,7 +1,7 @@
 import { Component, ViewChild,ElementRef,OnInit,Renderer2,AfterViewInit ,HostListener,ChangeDetectorRef} from '@angular/core';
 import { MatTableDataSource , MatTableModule} from '@angular/material/table';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
-import { NavController } from '@ionic/angular';
+import { NavController , IonInput} from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { MatIconModule } from '@angular/material/icon';
 import { GoogleDriveService } from '../services/drive.service';
@@ -25,7 +25,8 @@ interface MyObject {
 
 export class BillPage implements OnInit {
   @ViewChild('codeItem', { static: true }) myInputRef!: ElementRef<HTMLInputElement>;
-  
+  @ViewChild('input1', { static: false }) input1: IonInput| undefined
+  @ViewChild('input2', { static: false }) input2: IonInput| undefined
   phoneNumber: string;
   name: any;
   barcode:string
@@ -74,7 +75,7 @@ export class BillPage implements OnInit {
     private cdr: ChangeDetectorRef,
     private elementRef:ElementRef) { 
     
-
+    
     this.inputDisable=false
     this.isBill=false
     this.barcode =''
@@ -126,14 +127,22 @@ export class BillPage implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent,index:number,option:string) {
+    
     // Check if the key pressed is "F1"
     if (event.key === 'F1') {
       // Prevent the default browser behavior for the F1 key press
       event.preventDefault();
-      // Call the method to handle the F1 key press
-      
+      if(this.paymentMethod == '' || this.paymentMethod== 'upi'){
+        this.paymentMethod='cash'
+      }
+      else if(this.paymentMethod=='cash'){
+        this.paymentMethod='card'
+      }
+      else if(this.paymentMethod=='card'){
+        this.paymentMethod='upi'
+      }
       this.addItem();
-    } else if (this.paymentMethod && event.key === 'Escape') {
+    } else if (this.paymentMethod && this.totalItems>0 && event.key === 'Escape') {
       console.log('generate.button')
       event.preventDefault(); // Prevent the default browser behavior for ESC key press
       this.generateBill();
@@ -178,6 +187,11 @@ else{      this.barcode += event.key  // Prevent the default browser behavior fo
     }
     
   }
+
+  focusNext(nextInput: IonInput) {
+    nextInput.setFocus();
+  }
+
   checkPhoneNumber(number:any){
     
     if(number.length==10 || number.length == 13){
@@ -229,8 +243,21 @@ else{      this.barcode += event.key  // Prevent the default browser behavior fo
   async showAlert(message:any) {
     const alert = await this.AlertController.create({
       message: message,
-      buttons: ['OK']
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+          if (this.isBill == false){
+              setTimeout(()=>{
+                this.input1?.setFocus()
+              },500)
+             
+          }
+          }
+        }
+      ]
     });  await alert.present();
+
   }
 
   changeQuantity(item: any) {
@@ -329,6 +356,7 @@ else{      this.barcode += event.key  // Prevent the default browser behavior fo
   }
 
   clearItems() {
+    this.inputDisable = false
     this.saveData()
     this.phoneNumber = '';
     this.name = '';
@@ -345,9 +373,12 @@ else{      this.barcode += event.key  // Prevent the default browser behavior fo
     this.billNumber = data.length
     this.generateUpdateBill = false
     this.updateBillNumber = 0
-    this.inputDisable = false
     this.isBill=false
     this.isEditButtonClicked=false
+           setTimeout(() => {
+            this.input1?.setFocus()
+       }, 500); 
+
     
     })
 
@@ -664,6 +695,7 @@ async saveData(): Promise<void> {
     this.selectedIndex = -1;
     this.inputDisable = true
     this.isBill =true
+    this.input2?.setFocus()
   }
 
   }
@@ -676,6 +708,7 @@ async saveData(): Promise<void> {
     this.filteredOptions = [];
     this.selectedIndex = -1;
     this.inputDisable = true
+    this.input2?.setFocus()
     this.isBill =true}
     
   }

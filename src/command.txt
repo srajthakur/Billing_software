@@ -1,5 +1,6 @@
 nvm use 16
 npm install -g @ionic/cli
 npm install -g cordova
+ npm i -g native-run
 ionic cordova run browser
 

@@ -32,6 +32,9 @@ export class SettlementPage {
   selectedPrinter:any;
   characteristic:any
   status: boolean = false;
+  loggedin :boolean=false;
+  loginEmail: string = '';
+  loginPassword: string= '';
 
   ip: string = ''
   deviceOptions: RequestDeviceOptions = {
@@ -237,6 +240,7 @@ export class SettlementPage {
   
 
   navFun(data:string){
+    this.loggedin = false
     if (data == 'BILL'){
       this.navCtrl.navigateForward('/bill')
     }
@@ -421,6 +425,22 @@ export class SettlementPage {
                                                  ////for web with api///////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+  async login() {
+    // Retrieve the stored data from native storage
+    console.log( this.nativeStorage.keys())
+    const k= this.nativeStorage.getItem(this.loginEmail)
+    console.log(k)
+    console.log(this.nativeStorage.getItem('logStatus'))
+    
+    this.nativeStorage.getItem(this.loginEmail)
+      .then(data => {
+        if (data.password === this.loginPassword) {
+          this.loggedin = true;
+        } else {
+          console.log('Invalid credentials.');
+        }
+      })
+      .catch(error => console.error('Error retrieving data:', error));
+  }
 
  }

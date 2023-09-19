@@ -56,7 +56,7 @@
 
         
         <!-- <ion-input id="phoneid" disable="" placeholder="" [(ngModel)]="phoneNumber" (ionInput)="onInputChanged()" (keydown.ArrowDown)="navigateOptions('down')" (keydown.ArrowUp)="navigateOptions('up')" (keydown.Enter)="selectOption()"></ion-input> -->
-        <ion-input id="phoneid" [disabled]="inputDisable" placeholder="" [(ngModel)]="phoneNumber" (ionInput)="onInputChanged()" (keydown.ArrowDown)="navigateOptions('down')" (keydown.ArrowUp)="navigateOptions('up')" (keydown.Enter)="selectOption()"></ion-input>
+        <ion-input #input1 (keyup.enter)="focusNext(input2)" id="phoneid" [disabled]="inputDisable" placeholder="" [(ngModel)]="phoneNumber" (ionInput)="onInputChanged()" (keydown.ArrowDown)="navigateOptions('down')" (keydown.ArrowUp)="navigateOptions('up')" (keydown.Enter)="selectOption()"></ion-input>
 
         <ion-list *ngIf="filteredOptions.length > 0">
           <ion-item *ngFor="let option of filteredOptions; let i = index" [class.selected]="selectedIndex === i" (click)="onOptionSelectedclick(option)">
@@ -66,7 +66,7 @@
         
       </ion-col>
       
-      <ion-col size="5"><ion-label class="custom-table" position="floating">Name</ion-label>    <ion-input id="phoneid" [disabled]="inputDisable" placeholder="" [(ngModel)]="name"></ion-input></ion-col>
+      <ion-col size="5"><ion-label class="custom-table" position="floating">Name</ion-label>    <ion-input #input2 id="phoneid" [disabled]="inputDisable" placeholder="" [(ngModel)]="name"></ion-input></ion-col>
         <ion-col size="2">    <ion-label class="custom-table">Bill Number: {{ billNumber }}</ion-label></ion-col>
     </ion-row>
     <ion-row *ngIf="isBill">
@@ -112,7 +112,7 @@
         </table>
       </ion-col>
       <ion-col size="4"  *ngIf="!isUpdateButtonClicked" (keydown)="onKeyDown($event,0,'')">
-        <ion-input id="phoneid" placeholder="Item Code" [(ngModel)]="itemcode" ></ion-input>
+        <ion-input id="phoneid" placeholder="Item Code" [disabled] = 'true' [(ngModel)]="itemcode" ></ion-input>
         <!-- <ion-input id="phoneid" placeholder="Item Quandity" [(ngModel)]="itemquandity"></ion-input> -->
         <ion-button expand="full" (click)="addItem()">Add</ion-button>
         <ion-button expand="full"  [disabled] = '(tableData.length == 0 && !stashed) || this.generateUpdateBill' (click)="stashBill(stashed ? 'unstash':'stash')">{{stashed ? 'un':''}}stash</ion-button>
