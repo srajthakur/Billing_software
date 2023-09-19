@@ -88,21 +88,29 @@ class MyRequestHandler(BaseHTTPRequestHandler):
                 del data[0]
             print(data)
             print('=======================================================')
+            bill=1
             for b in data:
                 print(b)
                 bls = "     "
-                bls = bls + str(b["billNumber"])
+                
+                
+                try:
+                    
+                    bill = b["billNumber"]
+                except:
+                    bill = bill+1
+                bls = bls + str(bill)
                 j = 0
                 if b["totalAmount"] != '':
                     bls = "     "
-                    bls = bls + str(b["billNumber"])
+                    bls = bls + str(bill)
                     j = 0
-                    while j < 10 - len(str(b["billNumber"])):
+                    while j < 10 - len(str(bill)):
                         bls = bls + " "
                         j = j + 1
                     bls = bls + str(b["paymentMethod"])
                     j = 0
-                    while j < 10 - len(str(b["billNumber"])):
+                    while j < 10 - len(str(bill)):
                         bls = bls + " "
                         j = j + 1
                     bls = bls + str(b["totalAmount"])
