@@ -15,9 +15,15 @@
       <ion-button (click)="navFun('CUSTOMER')" class="custom-button">
         Customer
       </ion-button>
+      
+
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button><ion-input [(ngModel)]="printQ" #input1></ion-input></ion-menu-button>
+      <ion-item>
+        <ion-label position="floating">Barcode quandity</ion-label>
+        <ion-input [(ngModel)]="printQ"></ion-input>
+      </ion-item>
       <ion-button (click)="navFun('SETTING')" class="custom-button">
         <ion-icon name="settings"></ion-icon>
       </ion-button>

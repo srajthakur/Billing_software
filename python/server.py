@@ -27,7 +27,7 @@ import pandas as pd
 import sys
 from PIL import Image
 import win32con as wcon
-import win32print as wprn
+import win32print
 import win32ui as wui
 from PIL import Image as pil_image, ImageWin as pil_image_win
 import time
@@ -147,6 +147,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(response_data).encode())
 
         if self.path == '/api/print_bill':
+            win32print.SetDefaultPrinter('POS80 Printer')
             # Handle the POST request and set CORS headers
             print("billl     lllllllllllllllllllllllllllllllllllllll")
             self.send_response(200)
@@ -237,6 +238,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
         if self.path == '/api/print_label':
             # Handle the POST request and set CORS headers
             print("billl     lllllllllllllllllllllllllllllllllllllll")
+            win32print.SetDefaultPrinter('POS58L Printer')
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
 
@@ -279,8 +281,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             print('api connected')
             print(data)
 
-            print(type(code))
-            n = str(code)
+            code = str(data['barcode'])
             print(code[0:12])
             my_code = EAN13(code[0:12], writer=ImageWriter())
 
@@ -294,7 +295,7 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             out_file = ".\\test.pdf"
 
             i = 0
-            quantity = 1
+            quantity = int(data['printQ'])
             while (i < quantity):
                 time.sleep(1)
                 hdc = wui.CreateDC()

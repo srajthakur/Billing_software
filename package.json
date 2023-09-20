@@ -119,8 +119,8 @@
       "cordova-plugin-filechooser": {}
     },
     "platforms": [
-      "browser",
-      "android"
+      "android",
+      "browser"
     ]
   }
 }

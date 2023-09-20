@@ -129,7 +129,7 @@ export class BillPage implements OnInit {
   onKeyDown(event: KeyboardEvent,index:number,option:string) {
     
     // Check if the key pressed is "F1"
-    if (event.key === 'F1') {
+    if (event.key === 'Tab') {
       // Prevent the default browser behavior for the F1 key press
       event.preventDefault();
       if(this.paymentMethod == '' || this.paymentMethod== 'upi'){

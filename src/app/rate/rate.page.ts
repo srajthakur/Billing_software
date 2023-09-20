@@ -3,6 +3,7 @@ import { NavController } from '@ionic/angular';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { MatTableDataSource , MatTableModule} from '@angular/material/table';
 import { AlertController } from '@ionic/angular';
+import { ApiService } from '../services/api.service';
 import { MaxLengthValidator } from '@angular/forms';
 import { Data } from '@angular/router';
 
@@ -24,6 +25,7 @@ export class RatePage {
   productName : string=''
   productPrice : string=''
   code:any=''
+  printQ:any=1
 
   newCustomProduct: any = {
     code: '',
@@ -33,7 +35,7 @@ export class RatePage {
   }; // Object to store new custom product inputs
 
   displayedColumns: string[] = ['code', 'name', 'price','action']; 
-  constructor(private navCtrl: NavController,private nativeStorage:NativeStorage,private AlertController:AlertController,) {
+  constructor(private apiservices:ApiService, private navCtrl: NavController,private nativeStorage:NativeStorage,private AlertController:AlertController,) {
     this.dataSource = new MatTableDataSource(this.tableData)
     this.nativeStorage.getItem('rate').then(data=>{
       console.log('date already created succesfully')
@@ -216,6 +218,16 @@ delete(data:any){
 this.deleteShowAlert(data)
 }
 print(data:any){
-
+  
+this.apiservices.printLabel({'barcode':data,'printQ':this.printQ}).subscribe(
+  (response) => {
+    // Handle the response from the server after printing the settlement
+    this.printQ=1
+    console.log('Printing response:', response);
+  },
+  (error) => {
+    console.error('Error printing settlement:', error);
+  }
+);
 }
 }
