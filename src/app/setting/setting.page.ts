@@ -138,7 +138,7 @@ export class SettingPage {
         console.log(customer)
         const workbook = XLSX.utils.book_new();
         const worksheet = XLSX.utils.json_to_sheet(Object.entries(customer).map(([number, name]) => ({ number, name })));
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Customers');
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'customer');
         const excelBuffer = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
 
         const fileName = 'customer_data.xlsx';
@@ -258,6 +258,44 @@ export class SettingPage {
   }
 
   
+
+
+ customerDataInExcel() {
+  // // Sample data as a JavaScript dictionary
+  // const data = [
+  //   { Name: 'Alice', Age: 30 },
+  //   { Name: 'Bob', Age: 25 },
+  //   { Name: 'Charlie', Age: 35 },
+  // ];
+
+  // // Create a new workbook
+  // const workbook = XLSX.utils.book_new();
+  // const worksheet = XLSX.utils.json_to_sheet(data);
+
+  // // Add the worksheet to the workbook
+  // XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+  // // Convert the workbook to a blob
+  // const blob = XLSX.write(workbook, { bookType: 'xlsx', type: 'xlsx' });
+
+  // // Define the file name and location
+  // const fileName = 'data.xlsx';
+  // const filePath = cordova.file.externalDataDirectory + fileName;
+
+  // // Write the blob to a file using Cordova File plugin
+  // window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function (dirEntry) {
+  //   dirEntry.getFile(fileName, { create: true }, function (fileEntry) {
+  //     fileEntry.createWriter(function (fileWriter) {
+  //       fileWriter.write(blob);
+  //       console.log('Excel file saved:', filePath);
+  //     }, handleError);
+  //   }, handleError);
+  // }, handleError);
+
+  // function handleError(error) {
+  //   console.error('File operation error:', error);
+  // }
+}
 
 }
 
