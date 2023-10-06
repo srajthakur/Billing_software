@@ -118,7 +118,6 @@
       "cordova-plugin-filechooser": {}
     },
     "platforms": [
-      "android",
       "browser"
     ]
   }
