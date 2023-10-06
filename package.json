@@ -115,7 +115,6 @@
       "cordova-plugin-file-opener2": {},
       "cordova-plugin-bluetooth-serial": {},
       "cordova-plugin-android-permissions": {},
-      "com.cesidiodibenedetto.filechooser": {},
       "cordova-plugin-filechooser": {}
     },
     "platforms": [
