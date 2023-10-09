@@ -446,33 +446,35 @@ export class SettlementPage {
 
 
   devices: any[] = [];
-  devices1: any[] = [1,2,3];
-  ionViewDidEnter() {
-    this.btnFindDevices();
-  }
+
   btnFindDevices() {
     this.bluetoothSerial.isEnabled().then(() => {
-    this.bluetoothSerial.discoverUnpaired().then((allDevices) => {
-    this.devices = allDevices;
-    console.log(allDevices);
- });
- });
- }
-
- btnBlueToothConnect(device:any) {
-  if (this.devices.length > 0) {
-  //this code connects device which’s position is 0. Change it whatever you 
-  //want.
-  this.bluetoothSerial.connect(device.id).subscribe((data) => {
-  console.log("Connected", data);
-  }, (error) => {
-  console.log("not Connected", error);
-  });
-   }
-   else {
-   console.log("Device List did not genereted yet.");
-   }
-   }
+      this.bluetoothSerial.discoverUnpaired().then((allDevices) => {
+        this.devices = allDevices as BluetoothDevice[]; // Cast to the defined interface
+        console.log("Discovered devices:", this.devices);
+      }).catch((error) => {
+        console.error("Error discovering devices:", error);
+      });
+    }).catch((error) => {
+      console.error("Bluetooth is not enabled:", error);
+    });
+  }
+  
+  btnBlueToothConnect(device: BluetoothDevice) {
+    if (device) {
+      this.bluetoothSerial.connect(device.id).subscribe(
+        (data) => {
+          console.log("Connected to", device.name, data);
+        },
+        (error) => {
+          console.error("Connection error with", device.name, error);
+        }
+      );
+    } else {
+      console.error("Invalid device or device not selected.");
+    }
+  }
+  
 
    btnBlueToothPrint() {
     //Attention… Bluetooth printer prints data when whole line filled. For 
