@@ -443,4 +443,42 @@ export class SettlementPage {
       .catch(error => console.error('Error retrieving data:', error));
   }
 
+
+
+  devices: any[] = [];
+  devices1: any[] = [1,2,3];
+  ionViewDidEnter() {
+    this.btnFindDevices();
+  }
+  btnFindDevices() {
+    this.bluetoothSerial.isEnabled().then(() => {
+    this.bluetoothSerial.discoverUnpaired().then((allDevices) => {
+    this.devices = allDevices;
+    console.log(allDevices);
+ });
+ });
+ }
+
+ btnBlueToothConnect(device:any) {
+  if (this.devices.length > 0) {
+  //this code connects device which’s position is 0. Change it whatever you 
+  //want.
+  this.bluetoothSerial.connect(device.id).subscribe((data) => {
+  console.log("Connected", data);
+  }, (error) => {
+  console.log("not Connected", error);
+  });
+   }
+   else {
+   console.log("Device List did not genereted yet.");
+   }
+   }
+
+   btnBlueToothPrint() {
+    //Attention… Bluetooth printer prints data when whole line filled. For 
+    //example in my case printer is 32 colon,
+    //“hello world” has 11 characters. so it prints after 3 times clicked 
+    //the print button.
+        this.bluetoothSerial.write("hello world").then(() => { console.log("s"); }, () => { console.log("f"); });
+    }
  }
