@@ -395,7 +395,6 @@ export class SettlementPage {
 //   });
 // }
 
-
 // requestBluetoothPermissions() {
 //   this.showAlert('requestBluetoothPermissions called')
 //   this.androidPermissions.requestPermissions([
