@@ -10,6 +10,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { ApiService } from '../services/api.service';
+import { BleService } from '../services/ble.service';
 
 interface MyObject {
   'date' : string,
@@ -41,11 +42,23 @@ export class SettlementPage {
     acceptAllDevices: true,
   };
 
-  constructor(private apiService: ApiService,private androidPermissions: AndroidPermissions,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
+  constructor(private bleservice:BleService, private apiService: ApiService,private androidPermissions: AndroidPermissions,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
     this.dataSource = new MatTableDataSource(this.tableData)  
   
-
-
+   
+      this.bleservice.scanForDevices(
+        (device:any) => {
+          // Handle success, e.g., display the discovered device
+          console.log('Discovered device: ' + device.name || device.id);
+          this.showAlert(device)
+        },
+        (error:any) => {
+          // Handle error
+          console.error('Error: ' + JSON.stringify(error));
+          this.showAlert(JSON.stringify(error))
+        }
+      );
+     
     this.getData()
     // this.checkBluetoothPermissions()
     // this.ionViewDidEnter()
