@@ -6,7 +6,7 @@ import { PrintServiceA } from '../services/print.service';
 
 import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+
 
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { ApiService } from '../services/api.service';
@@ -42,7 +42,7 @@ export class SettlementPage {
     acceptAllDevices: true,
   };
 
-  constructor(private bleservice:BleService, private apiService: ApiService,private androidPermissions: AndroidPermissions,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
+  constructor(private bleservice:BleService, private apiService: ApiService,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
     this.dataSource = new MatTableDataSource(this.tableData)  
   
    
