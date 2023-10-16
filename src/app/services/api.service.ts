@@ -21,4 +21,10 @@ export class ApiService {
     const url: string = `${this.baseUrl}${endpoint}`;
     return this.http.post(url, data);
   }
+  printLabel(data: any): Observable<any> {
+    const endpoint: string = '/print_label';
+    const url: string = `${this.baseUrl}${endpoint}`;
+    return this.http.post(url, data);
+  }
+
 }

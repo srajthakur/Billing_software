@@ -15,9 +15,15 @@
       <ion-button (click)="navFun('CUSTOMER')" class="custom-button">
         Customer
       </ion-button>
+      
+
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button><ion-input [(ngModel)]="printQ" #input1></ion-input></ion-menu-button>
+      <ion-item>
+        <ion-label position="floating">Barcode quandity</ion-label>
+        <ion-input [(ngModel)]="printQ"></ion-input>
+      </ion-item>
       <ion-button (click)="navFun('SETTING')" class="custom-button">
         <ion-icon name="settings"></ion-icon>
       </ion-button>
@@ -50,6 +56,15 @@
           <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef>Product Price</th>
             <td mat-cell *matCellDef="let product">{{ product.productPrice }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>action</th>
+            <td mat-cell *matCellDef="let product">
+              <!-- <ion-button mat-icon-button (click)="settle(product.date)">Settle</ion-button> -->
+              <ion-button mat-icon-button (click)="delete(product.productCode)">Delete</ion-button>
+              <ion-button mat-icon-button (click)="print(product.productCode)">Print</ion-button>
+            </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -31,8 +31,28 @@
 </ion-header>
 
 
+	<ion-content *ngIf="!loggedin">
+	  <h3>Login</h3>
+	  <form (ngSubmit)="login()" #loginForm="ngForm">
+		<div class="form-group">
+		  <label color="black"  for="loginEmail">Email:</label>
+		  <input type="text" id="loginEmail" name="loginEmail" required [(ngModel)]="loginEmail">
+		</div>
+		<div class="form-group">
+		  <label color="black"  for="loginPassword">Password:</label>
+		  <input type="password" id="loginPassword" name="loginPassword" required [(ngModel)]="loginPassword">
+		</div>
+		<div class="form-group">
+		  <input type="submit" value="Login" class="btn">
+		</div>
+	  </form>
+	  
+	</ion-content>
 
-<ion-content *ngIf="viewBill == 'allBill'">
+  
+
+
+<ion-content *ngIf="loggedin && viewBill == 'allBill'">
   <ion-button mat-icon-button (click)="back()">Back</ion-button>
   <div class="container" >
     <table mat-table [dataSource]="dataSource" class="mat-table">
@@ -65,7 +85,7 @@
     </table>
   </div>
 </ion-content>
-  <ion-content *ngIf="viewBill == 'daySale'">
+  <ion-content *ngIf="loggedin && viewBill == 'daySale'">
   <div class="container" >
     <table mat-table [dataSource]="dataSource" class="mat-table">
       <ng-container matColumnDef="date">
@@ -85,7 +105,7 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>action</th>
         <td mat-cell *matCellDef="let product">
-          <ion-button mat-icon-button (click)="settle(product.date)">Settle</ion-button>
+          <!-- <ion-button mat-icon-button (click)="settle(product.date)">Settle</ion-button> -->
           <ion-button mat-icon-button (click)="viewDaySale(product.date)">View</ion-button>
           <ion-button mat-icon-button (click)="printThroughWebApiServices(product.date)">Print</ion-button>
         </td>
@@ -96,6 +116,7 @@
     </table>
   </div>
 </ion-content>
+
 <!-- <div *ngIf = "bluetoothList.length>0">
 <ion-list>
   <ion-item *ngFor="let item of bluetoothList" (click)="selectPrinter(item.id)">
