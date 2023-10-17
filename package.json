@@ -115,7 +115,6 @@
       "cordova-plugin-file": {},
       "cordova-plugin-file-opener2": {},
       "cordova-plugin-bluetooth-serial": {},
-      "cordova-plugin-android-permissions": {},
       "cordova-plugin-filechooser": {},
       "cordova-plugin-ble-central": {
         "BLUETOOTH_USAGE_DESCRIPTION": "srt",
@@ -125,8 +124,8 @@
       }
     },
     "platforms": [
-      "android",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }
