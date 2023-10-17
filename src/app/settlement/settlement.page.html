@@ -132,7 +132,7 @@
 </div> -->
 
 <h1>Dictionary Buttons</h1>
-
+<button (click)="onPrint()" >print</button>
 <div id="buttonContainer">
-  <button *ngFor="let key of getKeys(bdata)" (click)="displayValue(key)">{{ key }}</button>
+  <button *ngFor="let key of getKeys(bdata)" (click)="onConnect(key)">{{ key }}</button>
 </div>

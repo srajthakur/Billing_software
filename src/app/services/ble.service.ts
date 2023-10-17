@@ -11,6 +11,11 @@ export class BleService {
   scanForDevices(callbackSuccess:any, callbackError:any) {
     ble.scan([], 5, callbackSuccess, callbackError);
   }
+  connect(deviceId: string, callbackSuccess: any, callbackError: any) {
+    ble.connect(deviceId, callbackSuccess, callbackError);
+  }
 
-  // Add other BLE-related methods here
+  print(deviceId: string, data: string, callbackSuccess: any, callbackError: any) {
+    ble.write(deviceId, data, callbackSuccess, callbackError);
+  }
 }

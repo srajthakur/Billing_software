@@ -39,6 +39,7 @@ export class SettlementPage {
    bdata: { [key: string]: string } = {
     key1: "Value 1"
   };
+  selectedDevice:any=''
   
 
 
@@ -56,8 +57,8 @@ export class SettlementPage {
           // Handle success, e.g., display the discovered device
           console.log('Discovered device: ' + device.name || device.id);
           
-          this.bdata[device.name || device.id] = device.name || device.id
-          this.showAlert(device)
+            
+          this.showAlert(device.name)
         },
         (error:any) => {
           // Handle error
@@ -465,10 +466,46 @@ export class SettlementPage {
   //////////////////////////////////////////////////////////////////////////////android////////////////////////////
 
   displayValue(value: any): void {
+    this.bleservice.connect
     alert('Value: ' + value);
   }
+
+
+  
   getKeys(data: any): string[] {
     return Object.keys(data);
   }
+
+  onConnect(deviceId: any) {
+    this.bleservice.connect(
+      deviceId,
+      () => {
+        console.log('Connected to device:', deviceId);
+        this.selectedDevice = deviceId
+        this.showAlert('succesfully connected')
+      },
+      (error:any) => {
+        console.error('Connection error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
+
+  onPrint() {
+    let data='hureeeee'
+    this.bleservice.print(
+      this.selectedDevice,
+      data,
+      () => {
+        console.log('Data sent to device:', data);
+        this.showAlert('succesfully connected')
+      },
+      (error:any) => {
+        console.error('Data send error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
+
 
  }
