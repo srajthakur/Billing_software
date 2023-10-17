@@ -36,6 +36,11 @@ export class SettlementPage {
   loggedin :boolean=false;
   loginEmail: string = '';
   loginPassword: string= '';
+   bdata: { [key: string]: string } = {
+    key1: "Value 1"
+  };
+  
+
 
   ip: string = ''
   deviceOptions: RequestDeviceOptions = {
@@ -50,6 +55,8 @@ export class SettlementPage {
         (device:any) => {
           // Handle success, e.g., display the discovered device
           console.log('Discovered device: ' + device.name || device.id);
+          
+          this.bdata[device.name || device.id] = device.name || device.id
           this.showAlert(device)
         },
         (error:any) => {
@@ -454,6 +461,14 @@ export class SettlementPage {
         }
       })
       .catch(error => console.error('Error retrieving data:', error));
+  }
+  //////////////////////////////////////////////////////////////////////////////android////////////////////////////
+
+  displayValue(value: any): void {
+    alert('Value: ' + value);
+  }
+  getKeys(data: any): string[] {
+    return Object.keys(data);
   }
 
  }
