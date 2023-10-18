@@ -6,10 +6,11 @@ import { PrintServiceA } from '../services/print.service';
 
 import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+
 
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { ApiService } from '../services/api.service';
+import { BleService } from '../services/ble.service';
 
 interface MyObject {
   'date' : string,
@@ -35,17 +36,37 @@ export class SettlementPage {
   loggedin :boolean=false;
   loginEmail: string = '';
   loginPassword: string= '';
+   bdata: { [key: string]: string } = {
+    key1: "Value 1"
+  };
+  selectedDevice:any=''
+  
+
 
   ip: string = ''
   deviceOptions: RequestDeviceOptions = {
     acceptAllDevices: true,
   };
 
-  constructor(private apiService: ApiService,private androidPermissions: AndroidPermissions,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
+  constructor(private bleservice:BleService, private apiService: ApiService,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
     this.dataSource = new MatTableDataSource(this.tableData)  
   
-
-
+   
+      this.bleservice.scanForDevices(
+        (device:any) => {
+          // Handle success, e.g., display the discovered device
+          console.log('Discovered device: ' + device.name || device.id);
+          
+            
+          this.showAlert(device.name)
+        },
+        (error:any) => {
+          // Handle error
+          console.error('Error: ' + JSON.stringify(error));
+          this.showAlert(JSON.stringify(error))
+        }
+      );
+     
     this.getData()
     // this.checkBluetoothPermissions()
     // this.ionViewDidEnter()
@@ -441,5 +462,49 @@ export class SettlementPage {
       })
       .catch(error => console.error('Error retrieving data:', error));
   }
+  //////////////////////////////////////////////////////////////////////////////android////////////////////////////
+
+  displayValue(value: any): void {
+    this.bleservice.connect
+    alert('Value: ' + value);
+  }
+
+
+  
+  getKeys(data: any): string[] {
+    return Object.keys(data);
+  }
+
+  onConnect(deviceId: any) {
+    this.bleservice.connect(
+      deviceId,
+      () => {
+        console.log('Connected to device:', deviceId);
+        this.selectedDevice = deviceId
+        this.showAlert('succesfully connected')
+      },
+      (error:any) => {
+        console.error('Connection error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
+
+  onPrint() {
+    let data='hureeeee'
+    this.bleservice.print(
+      this.selectedDevice,
+      data,
+      () => {
+        console.log('Data sent to device:', data);
+        this.showAlert('succesfully connected')
+      },
+      (error:any) => {
+        console.error('Data send error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
+
 
  }
