@@ -9,7 +9,7 @@ export class PrintServiceA {
 
   searchBluetoothPrinter()
 {
-//This will return a list of bluetooth devices
+//This will return a list of bluetooth device
    return this.btSerial.list(); 
 }
 connectToBluetoothPrinter(macAddress:any)
