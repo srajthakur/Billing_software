@@ -477,7 +477,7 @@ export class SettlementPage {
 
   onConnect(deviceId: any) {
     this.bleservice.connect(
-      deviceId,
+      this.bdata[deviceId],
       () => {
         console.log('Connected to device:', deviceId);
         this.selectedDevice = this.bdata[deviceId]
@@ -485,7 +485,7 @@ export class SettlementPage {
       },
       (error:any) => {
         console.error('Connection error:', error);
-        this.showAlert(error)
+        this.showAlert(error + this.bdata[deviceId])
       }
     );
   }
