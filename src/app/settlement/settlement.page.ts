@@ -57,8 +57,8 @@ export class SettlementPage {
           // Handle success, e.g., display the discovered device
           console.log('Discovered device: ' + device.name || device.id);
           
-            
-          this.showAlert(device.name)
+          this.bdata[device.name]=device.id  
+          this.showAlert(device.name + device.id)
         },
         (error:any) => {
           // Handle error
@@ -480,7 +480,7 @@ export class SettlementPage {
       deviceId,
       () => {
         console.log('Connected to device:', deviceId);
-        this.selectedDevice = deviceId
+        this.selectedDevice = this.bdata[deviceId]
         this.showAlert('succesfully connected')
       },
       (error:any) => {
