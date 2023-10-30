@@ -497,7 +497,7 @@ export class SettlementPage {
       data,
       () => {
         console.log('Data sent to device:', data);
-        this.showAlert('succesfully connected')
+        this.showAlert('succesfully print')
       },
       (error:any) => {
         console.error('Data send error:', error);
