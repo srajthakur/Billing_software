@@ -36,6 +36,7 @@ with open(filename, "r") as csvfile:
                 csvreader = csv.DictReader(csvfile)
                 
                 for row in csvreader:
+                  
                     rowss.append(row)
 #os.system('cls')
 da=date.today()
