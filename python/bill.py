@@ -1494,6 +1494,9 @@ def login():
     business_title = Label(root_login, text_styles_title, text="Welcome, Please Login")
     business_title.place(rely=0.05, relx=0.35)
 
+
+
+
   root_login.mainloop()
 login()
 
