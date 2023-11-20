@@ -39,12 +39,7 @@ with open(filename, "r") as csvfile:
                   
                     rowss.append(row)
 #os.system('cls')
-da=date.today()
-        
-
-        
-
-        
+da=date.today()    
 filename ="bill/data/" + str(da)+".csv"
 
 #print(filename)
