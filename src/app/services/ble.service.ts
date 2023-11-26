@@ -16,32 +16,32 @@ export class BleService {
   }
 
   print(deviceId: string, data: string, callbackSuccess: any, callbackError: any) {
-    ble.write(deviceId, data, callbackSuccess, callbackError)
-    ble.sendPrinterData(deviceId, data, callbackSuccess, callbackError)
+    ble.write( data, callbackSuccess, callbackError)
+    ble.sendPrinterData( data, callbackSuccess, callbackError)
     
   }
   print1(deviceId: string, data: string, callbackSuccess: any, callbackError: any) {
-    ble.write(deviceId, data, callbackSuccess, callbackError)
-    ble.sendTextData(deviceId, data, callbackSuccess, callbackError);
+    ble.write( data, callbackSuccess, callbackError)
+    ble.sendTextData( data, callbackSuccess, callbackError);
     
   }
 
   print3(deviceId: string, data: string, callbackSuccess: any, callbackError: any) {
-    ble.sendPrinterData( data, callbackSuccess, callbackError);
+    ble.sendPrinterData(deviceId, data, callbackSuccess, callbackError);
   }
   print4(deviceId: string, data: string, callbackSuccess: any, callbackError: any) {
-    ble.sendTextData(data, callbackSuccess, callbackError);
+    ble.sendTextData(deviceId,data, callbackSuccess, callbackError);
   
   
 }
 print5(deviceId: string, data: string, callbackSuccess: any, callbackError: any) {
  
-  ble.sendToBluetoothPrinter(deviceId, data, callbackSuccess, callbackError);
+  ble.sendToBluetoothPrinter( data, callbackSuccess, callbackError);
 }
 
 print6(deviceId: string, data: string, callbackSuccess: any, callbackError: any){
-ble.write(deviceId, data, callbackSuccess, callbackError)
-ble.sendToBluetoothPrinter(deviceId, data, callbackSuccess, callbackError)
+ble.write( data, callbackSuccess, callbackError)
+ble.sendToBluetoothPrinter( data, callbackSuccess, callbackError)
 }
 connp(deviceId: string, data: string, callbackSuccess: any, callbackError: any){
   ble.connectAndPrint(deviceId, data,callbackSuccess, callbackError)
