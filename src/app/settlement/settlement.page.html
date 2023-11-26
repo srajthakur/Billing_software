@@ -133,6 +133,11 @@
 
 <h1>Dictionary Buttons</h1>
 <button (click)="onPrint()" >print</button>
+<button (click)="onPrint1()" >print1</button>
+<button (click)="onPrint3()" >print</button>
+<button (click)="onPrint4()" >print1</button>
+<button (click)="onPrint5()" >print</button>
+<button (click)="onPrint6()" >print1</button>
 <div id="buttonContainer">
   <button *ngFor="let key of getKeys(bdata)" (click)="onConnect(key)">{{ key }}</button>
 </div>
