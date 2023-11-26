@@ -594,4 +594,20 @@ export class SettlementPage {
       }
     );
   }
+  connp() {
+    let data='hureeeee'
+    console.log('111111111111')
+    this.bleservice.connp(
+      this.selectedDevice,
+      data,
+      () => {
+        console.log('Data sent to device:', data);
+        this.showAlert('succesfully print')
+      },
+      (error:any) => {
+        console.error('Data send error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
  }
