@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { MatTableDataSource ,MatTableModule} from '@angular/material/table';
-import { PrintServiceA } from '../services/print.service';
+// import { PrintServiceA } from '../services/print.service';
 
 import { AlertController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 
 
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+// import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 import { ApiService } from '../services/api.service';
 import { BleService } from '../services/ble.service';
 
@@ -48,7 +48,7 @@ export class SettlementPage {
     acceptAllDevices: true,
   };
 
-  constructor(private bleservice:BleService, private apiService: ApiService,private bluetoothSerial: BluetoothSerial,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform,private printserviceAndroid: PrintServiceA) {
+  constructor(private bleservice:BleService, private apiService: ApiService,private navCtrl: NavController,private AlertController:AlertController,private nativeStorage:NativeStorage,private platform: Platform) {
     this.dataSource = new MatTableDataSource(this.tableData)  
   
    
@@ -238,25 +238,25 @@ export class SettlementPage {
       buttons: ['OK']
     });  await alert.present();
   }
-  print(date:any){
-         this.printserviceAndroid.searchBluetoothPrinter().then(data=>{
-          //this.bluetoothList=data
+  // print(date:any){
+  //        this.printserviceAndroid.searchBluetoothPrinter().then(data=>{
+  //         //this.bluetoothList=data
           
-          this.showAlert(this.bluetoothList.length.toString())
-         })
-  }
+  //         this.showAlert(this.bluetoothList.length.toString())
+  //        })
+  // }
   selectPrinter(macAddress:any){
     //Selected printer macAddress stored here
     this.selectedPrinter=macAddress;
   }
   
   //This will print
-  printStuff()
-  {  
-     //The text that you want to print
-     var myText="Hello hello hello \n\n\n This is a test \n\n\n Hello hello hello \n\n\n This is a test \n\n\n";
-     this.printserviceAndroid.sendToBluetoothPrinter(this.selectedPrinter,myText);
-  }
+  // printStuff()
+  // {  
+  //    //The text that you want to print
+  //    var myText="Hello hello hello \n\n\n This is a test \n\n\n Hello hello hello \n\n\n This is a test \n\n\n";
+  //    this.printserviceAndroid.sendToBluetoothPrinter(this.selectedPrinter,myText);
+  // }
   
   
 
@@ -492,7 +492,28 @@ export class SettlementPage {
 
   onPrint() {
     let data='hureeeee'
+    console.log('innnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
     this.bleservice.print(
+      this.selectedDevice,
+      data,
+      () => {
+        console.log('Data sent to device:', data);
+        this.showAlert('succesfully print')
+      },
+      (error:any) => {
+        console.error('Data send error:', error);
+        this.showAlert(error)
+      }
+    );
+
+    
+    
+  }
+
+  onPrint1() {
+    let data='hureeeee'
+    console.log('111111111111')
+    this.bleservice.print1(
       this.selectedDevice,
       data,
       () => {
@@ -506,7 +527,87 @@ export class SettlementPage {
     );
   }
 
-  
 
+  onPrint3() {
+    let data='hureeeee'
+    console.log('111111111111')
+    this.bleservice.print3(
+      this.selectedDevice,
+      data,
+      () => {
+        console.log('Data sent to device:', data);
+        this.showAlert('succesfully print')
+      },
+      (error:any) => {
+        console.error('Data send error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
 
+  onPrint4() {
+    let data='hureeeee'
+    console.log('111111111111')
+    this.bleservice.print4(
+      this.selectedDevice,
+      data,
+      () => {
+        console.log('Data sent to device:', data);
+        this.showAlert('succesfully print')
+      },
+      (error:any) => {
+        console.error('Data send error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
+
+  onPrint5() {
+    let data='hureeeee'
+    console.log('111111111111')
+    this.bleservice.print5(
+      this.selectedDevice,
+      data,
+      () => {
+        console.log('Data sent to device:', data);
+        this.showAlert('succesfully print')
+      },
+      (error:any) => {
+        console.error('Data send error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
+  onPrint6() {
+    let data='hureeeee'
+    console.log('111111111111')
+    this.bleservice.print6(
+      this.selectedDevice,
+      data,
+      () => {
+        console.log('Data sent to device:', data);
+        this.showAlert('succesfully print')
+      },
+      (error:any) => {
+        console.error('Data send error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
+  connp() {
+    let data='hureeeee'
+    console.log('111111111111')
+    this.bleservice.connp(
+      this.selectedDevice,
+      data,
+      () => {
+        console.log('Data sent to device:', data);
+        this.showAlert('succesfully print')
+      },
+      (error:any) => {
+        console.error('Data send error:', error);
+        this.showAlert(error)
+      }
+    );
+  }
  }
