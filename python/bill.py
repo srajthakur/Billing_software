@@ -42,6 +42,8 @@ with open(filename, "r") as csvfile:
 da=date.today()    
 filename ="bill/data/" + str(da)+".csv"
 
+
+
 #print(filename)
 decision=os.path.exists(filename)
 #print(decision)
