@@ -45,6 +45,7 @@ filename ="bill/data/" + str(da)+".csv"
 
 
 #print(filename)
+
 decision=os.path.exists(filename)
 #print(decision)
 if(decision==False):
